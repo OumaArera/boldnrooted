@@ -177,22 +177,22 @@ const EventModal = ({ event, onClose }) => {
         <div className="p-8 relative overflow-hidden" style={{ background: event.gradient }}>
           <div className="absolute inset-0"
             style={{ background: "radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 55%)" }} />
-
-          {/* top accent */}
           <div className="absolute top-0 left-0 right-0 h-0.5"
             style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)" }} />
 
           <div className="relative z-10">
             <div className="flex items-start justify-between mb-4">
-              <span className="text-[9px] font-medium uppercase tracking-[0.22em] text-white/65 px-3 py-1.5 rounded-full"
-                style={{ background: "rgba(255,255,255,0.12)", fontFamily: "'Jost', system-ui, sans-serif" }}>
+              {/* was white/65 → now white/90 */}
+              <span className="text-[9px] font-medium uppercase tracking-[0.22em] text-white/90 px-3 py-1.5 rounded-full"
+                style={{ background: "rgba(255,255,255,0.18)", fontFamily: "'Jost', system-ui, sans-serif" }}>
                 {event.type}
               </span>
+              {/* was white/60 → now white/85 */}
               <button onClick={onClose}
                 className="transition"
-                style={{ color: "rgba(255,255,255,0.6)" }}
+                style={{ color: "rgba(255,255,255,0.85)" }}
                 onMouseEnter={e => e.currentTarget.style.color = "white"}
-                onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.6)"}>
+                onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.85)"}>
                 <X size={18} />
               </button>
             </div>
@@ -200,8 +200,9 @@ const EventModal = ({ event, onClose }) => {
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600 }}>
               {event.title}
             </h2>
+            {/* was white/65, weight 300 → now white/88, weight 400 */}
             <div className="flex flex-wrap gap-4 text-xs"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(255,255,255,0.65)" }}>
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(255,255,255,0.88)" }}>
               <span className="flex items-center gap-1.5"><Calendar size={11} />{event.date}</span>
               <span className="flex items-center gap-1.5"><Clock size={11} />{event.time}</span>
               <span className="flex items-center gap-1.5"><MapPin size={11} />{event.location}</span>
@@ -210,15 +211,17 @@ const EventModal = ({ event, onClose }) => {
         </div>
 
         <div className="p-8 space-y-6">
+          {/* was rgba(90,58,40,0.78) → now 0.88 */}
           <p className="text-sm leading-[1.82]"
-            style={{ fontFamily: "'EB Garamond', Georgia, serif", color: "rgba(90,58,40,0.78)" }}>
+            style={{ fontFamily: "'EB Garamond', Georgia, serif", color: "rgba(90,58,40,0.88)" }}>
             {event.description}
           </p>
 
           {/* Speakers */}
           <div>
+            {/* was rgba(90,58,40,0.4) → now 0.68 */}
             <p className="text-[10px] font-medium uppercase tracking-[0.22em] mb-3"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.4)" }}>
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.68)" }}>
               Speakers & Facilitators
             </p>
             <div className="flex flex-wrap gap-2">
@@ -226,9 +229,9 @@ const EventModal = ({ event, onClose }) => {
                 <span key={i} className="text-xs font-medium px-3 py-1.5 rounded-full"
                   style={{
                     fontFamily: "'Jost', system-ui, sans-serif",
-                    color: "#7a4a32",
-                    background: "rgba(200,146,122,0.1)",
-                    border: "1px solid rgba(200,146,122,0.22)",
+                    color: "#5a3018",
+                    background: "rgba(200,146,122,0.12)",
+                    border: "1px solid rgba(200,146,122,0.28)",
                   }}>
                   {s}
                 </span>
@@ -236,21 +239,21 @@ const EventModal = ({ event, onClose }) => {
             </div>
           </div>
 
-          {/* Tags */}
+          {/* Tags — was rgba(90,58,40,0.45) → now 0.70 */}
           <div className="flex flex-wrap gap-2">
             {event.tags.map((t, i) => (
               <span key={i} className="text-[10px] font-medium uppercase tracking-widest px-2.5 py-1 rounded-full"
                 style={{
                   fontFamily: "'Jost', system-ui, sans-serif",
-                  color: "rgba(90,58,40,0.45)",
-                  background: "rgba(200,146,122,0.08)",
+                  color: "rgba(90,58,40,0.70)",
+                  background: "rgba(200,146,122,0.10)",
                 }}>
                 {t}
               </span>
             ))}
           </div>
 
-          {/* Meta grid */}
+          {/* Meta grid — label: was rgba(90,58,40,0.38) → now 0.62 */}
           <div className="grid grid-cols-3 gap-4 py-5"
             style={{ borderTop: "1px solid rgba(200,146,122,0.15)", borderBottom: "1px solid rgba(200,146,122,0.15)" }}>
             {[
@@ -260,14 +263,14 @@ const EventModal = ({ event, onClose }) => {
             ].map(({ label, val }, i) => (
               <div key={i} className="text-center">
                 <p className="text-[9px] font-medium uppercase tracking-widest mb-1"
-                  style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.38)" }}>
+                  style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.62)" }}>
                   {label}
                 </p>
                 <p className="text-sm font-semibold"
                   style={{
                     fontFamily: "'Cormorant Garamond', Georgia, serif",
                     color: label === "Status"
-                      ? (event.registrationOpen ? "#7a9a6a" : "#a06060")
+                      ? (event.registrationOpen ? "#5a8a4a" : "#904040")
                       : "#3d2214",
                   }}>
                   {val}
@@ -291,23 +294,24 @@ const EventModal = ({ event, onClose }) => {
               <div className="flex-1 flex items-center justify-center py-3.5 rounded-full text-sm font-medium"
                 style={{
                   fontFamily: "'Jost', system-ui, sans-serif",
-                  color: "rgba(90,58,40,0.4)",
-                  background: "rgba(200,146,122,0.08)",
-                  border: "1px solid rgba(200,146,122,0.2)",
+                  color: "rgba(90,58,40,0.65)",
+                  background: "rgba(200,146,122,0.10)",
+                  border: "1px solid rgba(200,146,122,0.25)",
                 }}>
                 Registration Closed
               </div>
             )}
+            {/* share button — was rgba(200,146,122,0.7) → now 0.90 */}
             <button onClick={handleShare}
               className="w-12 h-12 rounded-full flex items-center justify-center transition"
               style={{
-                border: "1px solid rgba(200,146,122,0.3)",
-                color: "rgba(200,146,122,0.7)",
+                border: "1px solid rgba(200,146,122,0.40)",
+                color: "rgba(200,146,122,0.90)",
               }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = "#c8927a"; e.currentTarget.style.color = "#c8927a"; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(200,146,122,0.3)"; e.currentTarget.style.color = "rgba(200,146,122,0.7)"; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(200,146,122,0.40)"; e.currentTarget.style.color = "rgba(200,146,122,0.90)"; }}
             >
-              {copied ? <Check size={15} style={{ color: "#7a9a6a" }} /> : <Share2 size={15} />}
+              {copied ? <Check size={15} style={{ color: "#5a8a4a" }} /> : <Share2 size={15} />}
             </button>
           </div>
         </div>
@@ -357,7 +361,6 @@ const Events = () => {
         <div className="absolute top-0 left-0 right-0 h-0.5"
           style={{ background: "linear-gradient(90deg, transparent, #c8927a, #e8c4a0, #c8927a, transparent)" }} />
 
-        {/* watermark */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
           <span className="text-[18vw] font-bold leading-none"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", color: "rgba(200,146,122,0.06)", whiteSpace: "nowrap" }}>
@@ -377,7 +380,8 @@ const Events = () => {
           <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }}>
             <div className="flex items-center gap-4 mb-6">
               <Ornament className="text-[#c8927a]/50 w-28" />
-              <span className="text-[#b8845a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
+              {/* was #b8845a → now #9a6a3a */}
+              <span className="text-[#9a6a3a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
                 style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                 Gather · Grow · Go
               </span>
@@ -387,8 +391,9 @@ const Events = () => {
               <span className="block text-[clamp(3rem,7vw,5.5rem)]">Events &</span>
               <span className="block text-[clamp(3rem,7vw,5.5rem)]" style={{ color: "#c8927a" }}>Gatherings</span>
             </h1>
-            <p className="text-[#5a3a28]/60 text-base max-w-xl leading-relaxed"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300 }}>
+            {/* was /60, weight 300 → now /85, weight 400 */}
+            <p className="text-[#5a3a28]/85 text-base max-w-xl leading-relaxed"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400 }}>
               From intimate retreats to global conferences — every gathering is an opportunity to encounter God, build community, and be sent out changed.
             </p>
           </motion.div>
@@ -401,7 +406,8 @@ const Events = () => {
           <motion.div {...fadeUp(0)}>
             <div className="flex items-center gap-3 mb-6">
               <Ornament className="text-[#c8927a]/50 w-24" />
-              <span className="text-[#b8845a] text-[10px] font-medium uppercase tracking-[0.25em] whitespace-nowrap"
+              {/* was #b8845a → now #9a6a3a */}
+              <span className="text-[#9a6a3a] text-[10px] font-medium uppercase tracking-[0.25em] whitespace-nowrap"
                 style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                 ✦ Featured Event
               </span>
@@ -415,51 +421,54 @@ const Events = () => {
               }}
               onClick={() => setSelectedEvent(featured)}
             >
-              <div className="absolute top-0 left-0 right-0 h-0.5"
-                style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)" }} />
-
               <div className="relative p-10 sm:p-14 overflow-hidden">
                 <div className="absolute inset-0"
                   style={{ background: "radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 55%)" }} />
 
                 {/* date card */}
                 <div className="absolute top-8 right-8 rounded-2xl p-5 text-center hidden sm:block"
-                  style={{ background: "rgba(255,255,255,0.12)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.2)" }}>
+                  style={{ background: "rgba(255,255,255,0.15)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.25)" }}>
                   <p className="text-white font-bold text-4xl leading-none"
                     style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
                     {featured.dateShort.day}
                   </p>
-                  <p className="text-white/70 text-[10px] font-medium uppercase tracking-widest mt-1"
+                  {/* was white/70 → now white/90 */}
+                  <p className="text-white/90 text-[10px] font-medium uppercase tracking-widest mt-1"
                     style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                     {featured.dateShort.month}
                   </p>
-                  <p className="text-white/50 text-[10px] mt-0.5"
+                  {/* was white/50 → now white/75 */}
+                  <p className="text-white/75 text-[10px] mt-0.5"
                     style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                     {featured.dateShort.year}
                   </p>
                 </div>
 
                 <div className="relative z-10 max-w-xl">
-                  <span className="text-[9px] font-medium uppercase tracking-[0.22em] text-white/60 px-3 py-1.5 rounded-full"
-                    style={{ background: "rgba(255,255,255,0.12)", fontFamily: "'Jost', system-ui, sans-serif" }}>
+                  {/* was white/60 → now white/85 */}
+                  <span className="text-[9px] font-medium uppercase tracking-[0.22em] text-white/85 px-3 py-1.5 rounded-full"
+                    style={{ background: "rgba(255,255,255,0.15)", fontFamily: "'Jost', system-ui, sans-serif" }}>
                     {featured.type} · {featured.format}
                   </span>
                   <h2 className="text-3xl sm:text-4xl text-white mt-5 mb-4 leading-snug"
                     style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600 }}>
                     {featured.title}
                   </h2>
-                  <p className="text-white/60 text-sm leading-relaxed mb-7"
-                    style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300 }}>
+                  {/* was white/60, weight 300 → now white/85, weight 400 */}
+                  <p className="text-white/85 text-sm leading-relaxed mb-7"
+                    style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400 }}>
                     {featured.description}
                   </p>
-                  <div className="flex flex-wrap gap-5 text-white/65 text-xs mb-8"
-                    style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300 }}>
+                  {/* was white/65, weight 300 → now white/88, weight 400 */}
+                  <div className="flex flex-wrap gap-5 text-white/88 text-xs mb-8"
+                    style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400 }}>
                     <span className="flex items-center gap-1.5"><Calendar size={11} />{featured.date}</span>
                     <span className="flex items-center gap-1.5"><MapPin size={11} />{featured.location}</span>
                     <span className="flex items-center gap-1.5"><Clock size={11} />{featured.time}</span>
                   </div>
+                  {/* was #7a4a32 → now #5a3018 */}
                   <span className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white font-medium text-sm"
-                    style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#7a4a32" }}>
+                    style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#5a3018" }}>
                     View & Register <ArrowRight size={14} />
                   </span>
                 </div>
@@ -473,16 +482,17 @@ const Events = () => {
       <div className="sticky top-14 z-30 backdrop-blur-md"
         style={{ backgroundColor: "rgba(253,246,240,0.96)", borderBottom: "1px solid rgba(200,146,122,0.15)" }}>
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-3 overflow-x-auto scrollbar-hide">
-          <Filter size={13} style={{ color: "rgba(200,146,122,0.5)" }} className="shrink-0" />
+          <Filter size={13} style={{ color: "rgba(200,146,122,0.65)" }} className="shrink-0" />
           <div className="flex gap-2">
             {TYPES.map(t => (
               <button key={t} onClick={() => setTypeFilter(t)}
                 className="shrink-0 px-4 py-2 rounded-full text-xs font-medium uppercase tracking-widest transition"
                 style={{
                   fontFamily: "'Jost', system-ui, sans-serif",
-                  background: typeFilter === t ? "linear-gradient(135deg, #c8927a, #b8775a)" : "rgba(255,255,255,0.8)",
-                  color: typeFilter === t ? "white" : "rgba(90,58,40,0.6)",
-                  border: typeFilter === t ? "none" : "1px solid rgba(200,146,122,0.25)",
+                  background: typeFilter === t ? "linear-gradient(135deg, #c8927a, #b8775a)" : "rgba(255,255,255,0.9)",
+                  /* was rgba(90,58,40,0.6) → now 0.80 */
+                  color: typeFilter === t ? "white" : "rgba(90,58,40,0.80)",
+                  border: typeFilter === t ? "none" : "1px solid rgba(200,146,122,0.30)",
                   boxShadow: typeFilter === t ? "0 4px 14px rgba(200,146,122,0.3)" : "none",
                 }}>
                 {t}
@@ -496,9 +506,10 @@ const Events = () => {
                 className="shrink-0 px-4 py-2 rounded-full text-xs font-medium transition"
                 style={{
                   fontFamily: "'Jost', system-ui, sans-serif",
-                  background: formatFilter === f ? "linear-gradient(145deg, #3d2214, #5a3020)" : "rgba(255,255,255,0.8)",
-                  color: formatFilter === f ? "white" : "rgba(90,58,40,0.5)",
-                  border: formatFilter === f ? "none" : "1px solid rgba(200,146,122,0.2)",
+                  background: formatFilter === f ? "linear-gradient(145deg, #3d2214, #5a3020)" : "rgba(255,255,255,0.9)",
+                  /* was rgba(90,58,40,0.5) → now 0.78 */
+                  color: formatFilter === f ? "white" : "rgba(90,58,40,0.78)",
+                  border: formatFilter === f ? "none" : "1px solid rgba(200,146,122,0.25)",
                 }}>
                 {f}
               </button>
@@ -517,12 +528,12 @@ const Events = () => {
                 {...fadeUp(i * 0.07)}
                 className="group rounded-2xl overflow-hidden cursor-pointer transition-all"
                 style={{
-                  background: "rgba(255,255,255,0.8)",
-                  border: "1px solid rgba(200,146,122,0.18)",
+                  background: "rgba(255,255,255,0.88)",
+                  border: "1px solid rgba(200,146,122,0.20)",
                   boxShadow: "0 2px 14px rgba(180,120,90,0.06)",
                 }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(200,146,122,0.4)"; e.currentTarget.style.boxShadow = "0 8px 32px rgba(180,120,90,0.12)"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(200,146,122,0.18)"; e.currentTarget.style.boxShadow = "0 2px 14px rgba(180,120,90,0.06)"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(200,146,122,0.20)"; e.currentTarget.style.boxShadow = "0 2px 14px rgba(180,120,90,0.06)"; }}
                 onClick={() => setSelectedEvent(event)}
               >
                 <div className="flex items-stretch">
@@ -533,11 +544,13 @@ const Events = () => {
                       style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
                       {event.dateShort.day}
                     </span>
-                    <span className="text-white/70 text-[9px] font-medium uppercase tracking-wider mt-1"
+                    {/* was white/70 → now white/90 */}
+                    <span className="text-white/90 text-[9px] font-medium uppercase tracking-wider mt-1"
                       style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                       {event.dateShort.month}
                     </span>
-                    <span className="text-white/45 text-[9px] mt-0.5"
+                    {/* was white/45 → now white/72 */}
+                    <span className="text-white/72 text-[9px] mt-0.5"
                       style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                       {event.dateShort.year}
                     </span>
@@ -550,22 +563,23 @@ const Events = () => {
                         <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                           <span className="text-[9px] font-medium uppercase tracking-[0.2em] px-2.5 py-1 rounded-full"
                             style={{
-                              backgroundColor: `${event.accent}20`,
+                              backgroundColor: `${event.accent}28`,
                               color: event.accent,
                               fontFamily: "'Jost', system-ui, sans-serif",
                             }}>
                             {event.type}
                           </span>
+                          {/* was rgba(90,58,40,0.4) → now 0.68 */}
                           <span className="text-[9px] flex items-center gap-1"
-                            style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.4)" }}>
+                            style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.68)" }}>
                             <Globe size={9} /> {event.format}
                           </span>
                           {!event.registrationOpen && (
                             <span className="text-[9px] font-medium px-2 py-0.5 rounded-full"
                               style={{
                                 fontFamily: "'Jost', system-ui, sans-serif",
-                                color: "#a06060",
-                                background: "rgba(160,96,96,0.1)",
+                                color: "#904040",
+                                background: "rgba(160,96,96,0.12)",
                               }}>
                               Closed
                             </span>
@@ -575,16 +589,18 @@ const Events = () => {
                           style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600 }}>
                           {event.title}
                         </h3>
+                        {/* was rgba(90,58,40,0.5), weight 300 → now 0.72, weight 400 */}
                         <div className="flex flex-wrap gap-4 text-xs"
-                          style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(90,58,40,0.5)" }}>
+                          style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(90,58,40,0.72)" }}>
                           <span className="flex items-center gap-1"><Clock size={10} />{event.time}</span>
                           <span className="flex items-center gap-1"><MapPin size={10} />{event.location}</span>
                           <span className="flex items-center gap-1"><Users size={10} />Cap. {event.capacity}</span>
                         </div>
                       </div>
+                      {/* chevron icon — was rgba(200,146,122,0.6) → now 0.85 */}
                       <div className="shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-all mt-1"
-                        style={{ border: "1px solid rgba(200,146,122,0.25)" }}>
-                        <ChevronRight size={14} style={{ color: "rgba(200,146,122,0.6)" }} />
+                        style={{ border: "1px solid rgba(200,146,122,0.30)" }}>
+                        <ChevronRight size={14} style={{ color: "rgba(200,146,122,0.85)" }} />
                       </div>
                     </div>
                   </div>

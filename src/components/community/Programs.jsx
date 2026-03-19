@@ -172,22 +172,20 @@ const ProgramCard = ({ program, index, onExpand, isExpanded }) => (
     <div
       className="rounded-3xl overflow-hidden transition-all duration-400"
       style={{
-        background: "rgba(255,255,255,0.82)",
+        background: "rgba(255,255,255,0.88)",
         border: isExpanded
           ? "1px solid rgba(200,146,122,0.45)"
-          : "1px solid rgba(200,146,122,0.18)",
+          : "1px solid rgba(200,146,122,0.20)",
         boxShadow: isExpanded
           ? "0 12px 48px rgba(180,120,90,0.14)"
           : "0 2px 16px rgba(180,120,90,0.06)",
         backdropFilter: "blur(8px)",
       }}
     >
-      {/* top gradient accent */}
       <div className="h-0.5" style={{ background: "linear-gradient(90deg, transparent, #c8927a, #e8c4a0, transparent)" }} />
 
       <div className="p-7">
         <div className="flex items-start gap-5">
-          {/* emoji icon */}
           <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shrink-0 shadow-md"
             style={{ background: program.gradient }}>
             {program.emoji}
@@ -197,14 +195,15 @@ const ProgramCard = ({ program, index, onExpand, isExpanded }) => (
             <div className="flex items-center gap-2 flex-wrap mb-1">
               <span className="text-[9px] font-medium uppercase tracking-[0.2em] px-2.5 py-1 rounded-full"
                 style={{
-                  backgroundColor: `${program.accentColor}22`,
+                  backgroundColor: `${program.accentColor}28`,
                   color: program.accentColor,
                   fontFamily: "'Jost', system-ui, sans-serif",
                 }}>
                 {program.badge}
               </span>
+              {/* was rgba(90,58,40,0.4) → now 0.70 */}
               <span className="text-[9px] font-medium uppercase tracking-widest"
-                style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.4)" }}>
+                style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.70)" }}>
                 {program.duration}
               </span>
             </div>
@@ -214,15 +213,16 @@ const ProgramCard = ({ program, index, onExpand, isExpanded }) => (
             </h3>
           </div>
 
+          {/* expand button — was rgba(200,146,122,0.6) → now 0.85 */}
           <button
             onClick={() => onExpand(program.id)}
             className="shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition"
             style={{
-              border: "1px solid rgba(200,146,122,0.25)",
-              color: "rgba(200,146,122,0.6)",
+              border: "1px solid rgba(200,146,122,0.35)",
+              color: "rgba(200,146,122,0.85)",
             }}
             onMouseEnter={e => { e.currentTarget.style.borderColor = "#c8927a"; e.currentTarget.style.color = "#c8927a"; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(200,146,122,0.25)"; e.currentTarget.style.color = "rgba(200,146,122,0.6)"; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(200,146,122,0.35)"; e.currentTarget.style.color = "rgba(200,146,122,0.85)"; }}
           >
             <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.25 }}>
               <ChevronDown size={15} />
@@ -230,7 +230,7 @@ const ProgramCard = ({ program, index, onExpand, isExpanded }) => (
           </button>
         </div>
 
-        {/* meta row */}
+        {/* meta row — was rgba(90,58,40,0.5) → now 0.72 */}
         <div className="flex flex-wrap gap-4 mt-4 mb-4">
           {[
             { icon: Users, val: program.audience },
@@ -238,15 +238,16 @@ const ProgramCard = ({ program, index, onExpand, isExpanded }) => (
             { icon: Clock, val: `Next: ${program.nextCohort}` },
           ].map(({ icon: Icon, val }, i) => (
             <span key={i} className="flex items-center gap-1.5 text-xs"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(90,58,40,0.5)" }}>
-              <Icon size={11} style={{ color: "rgba(200,146,122,0.6)" }} />
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(90,58,40,0.72)" }}>
+              <Icon size={11} style={{ color: "rgba(200,146,122,0.75)" }} />
               {val}
             </span>
           ))}
         </div>
 
+        {/* was rgba(90,58,40,0.68), weight 300 → now 0.82, weight 400 */}
         <p className="text-sm leading-relaxed"
-          style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(90,58,40,0.68)" }}>
+          style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(90,58,40,0.82)" }}>
           {program.shortDesc}
         </p>
 
@@ -263,22 +264,25 @@ const ProgramCard = ({ program, index, onExpand, isExpanded }) => (
               <div className="pt-6 mt-6 space-y-6"
                 style={{ borderTop: "1px solid rgba(200,146,122,0.15)" }}>
 
+                {/* was rgba(90,58,40,0.75) → now 0.88 */}
                 <p className="text-sm leading-[1.85]"
-                  style={{ fontFamily: "'EB Garamond', Georgia, serif", color: "rgba(90,58,40,0.75)" }}>
+                  style={{ fontFamily: "'EB Garamond', Georgia, serif", color: "rgba(90,58,40,0.88)" }}>
                   {program.fullDesc}
                 </p>
 
                 {/* outcomes */}
                 <div>
+                  {/* was rgba(90,58,40,0.4) → now 0.68 */}
                   <p className="text-[10px] font-medium uppercase tracking-[0.22em] mb-3"
-                    style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.4)" }}>
+                    style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.68)" }}>
                     What You'll Gain
                   </p>
                   <div className="space-y-2.5">
                     {program.outcomes.map((o, i) => (
                       <div key={i} className="flex items-start gap-3">
                         <CheckCircle2 size={13} className="shrink-0 mt-0.5" style={{ color: program.accentColor }} />
-                        <p className="text-sm" style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(61,34,20,0.75)" }}>
+                        {/* was rgba(61,34,20,0.75), weight 300 → now 0.88, weight 400 */}
+                        <p className="text-sm" style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(61,34,20,0.88)" }}>
                           {o}
                         </p>
                       </div>
@@ -286,20 +290,21 @@ const ProgramCard = ({ program, index, onExpand, isExpanded }) => (
                   </div>
                 </div>
 
-                {/* verse */}
+                {/* verse in dark card */}
                 <div className="rounded-2xl p-5"
                   style={{ background: "linear-gradient(145deg, #3d2214, #5a3020)" }}>
+                  {/* was rgba(232,196,160,0.85) → now 0.95 */}
                   <p className="italic text-sm leading-relaxed mb-2"
-                    style={{ color: "rgba(232,196,160,0.85)", fontFamily: "'EB Garamond', Georgia, serif" }}>
+                    style={{ color: "rgba(232,196,160,0.95)", fontFamily: "'EB Garamond', Georgia, serif" }}>
                     "{program.verse}"
                   </p>
+                  {/* was rgba(200,146,122,0.55) → now 0.85 */}
                   <p className="text-[10px] font-medium uppercase tracking-widest"
-                    style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(200,146,122,0.55)" }}>
+                    style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(200,146,122,0.85)" }}>
                     — {program.verseRef}
                   </p>
                 </div>
 
-                {/* apply CTA */}
                 <Link to={`/programs/${program.id}/apply`}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium text-white transition hover:opacity-90 hover:scale-[1.03]"
                   style={{
@@ -352,7 +357,6 @@ const Programs = () => {
         <div className="absolute top-0 left-0 right-0 h-0.5"
           style={{ background: "linear-gradient(90deg, transparent, #c8927a, #e8c4a0, #c8927a, transparent)" }} />
 
-        {/* watermark */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
           <span className="text-[18vw] font-bold leading-none"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", color: "rgba(200,146,122,0.06)", whiteSpace: "nowrap" }}>
@@ -374,7 +378,8 @@ const Programs = () => {
           <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }}>
             <div className="flex items-center gap-4 mb-6">
               <Ornament className="text-[#c8927a]/50 w-28" />
-              <span className="text-[#b8845a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
+              {/* was #b8845a → now #9a6a3a */}
+              <span className="text-[#9a6a3a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
                 style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                 Grow With Us
               </span>
@@ -384,15 +389,16 @@ const Programs = () => {
               <span className="block text-[clamp(3rem,7vw,5.5rem)]">Our</span>
               <span className="block text-[clamp(3rem,7vw,5.5rem)]" style={{ color: "#c8927a" }}>Programs</span>
             </h1>
-            <p className="text-[#5a3a28]/60 text-base max-w-xl leading-relaxed"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300 }}>
+            {/* was /60, weight 300 → now /85, weight 400 */}
+            <p className="text-[#5a3a28]/85 text-base max-w-xl leading-relaxed"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400 }}>
               Structured pathways for spiritual growth, community, and Kingdom impact — designed for every season of your faith journey.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* ── Filter bar ── */}
+      {/* ── Filter bar — inactive pill text: was rgba(90,58,40,0.6) → now 0.80 ── */}
       <div className="sticky top-14 z-30 backdrop-blur-md"
         style={{ backgroundColor: "rgba(253,246,240,0.96)", borderBottom: "1px solid rgba(200,146,122,0.15)" }}>
         <div className="max-w-6xl mx-auto px-6 py-4 flex gap-2 overflow-x-auto scrollbar-hide">
@@ -403,9 +409,9 @@ const Programs = () => {
                 fontFamily: "'Jost', system-ui, sans-serif",
                 background: filter === f
                   ? "linear-gradient(135deg, #c8927a, #b8775a)"
-                  : "rgba(255,255,255,0.8)",
-                color: filter === f ? "white" : "rgba(90,58,40,0.6)",
-                border: filter === f ? "none" : "1px solid rgba(200,146,122,0.25)",
+                  : "rgba(255,255,255,0.9)",
+                color: filter === f ? "white" : "rgba(90,58,40,0.80)",
+                border: filter === f ? "none" : "1px solid rgba(200,146,122,0.30)",
                 boxShadow: filter === f ? "0 4px 16px rgba(200,146,122,0.3)" : "none",
               }}>
               {f}
@@ -444,22 +450,24 @@ const Programs = () => {
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <motion.div {...fadeUp(0)}>
-            <Ornament className="text-white/30 w-40 mx-auto mb-7" />
+            <Ornament className="text-white/40 w-40 mx-auto mb-7" />
             <h2 className="text-4xl text-white mb-4 leading-tight"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600 }}>
               Not Sure Which Programme<br />
               <em className="italic font-normal">Is Right for You?</em>
             </h2>
-            <p className="text-white/65 max-w-lg mx-auto text-base mb-8"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300 }}>
+            {/* was white/65, weight 300 → now white/88, weight 400 */}
+            <p className="text-white/88 max-w-lg mx-auto text-base mb-8"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400 }}>
               Reach out to our team — we'll help you find the best fit for where you are in your faith journey.
             </p>
+            {/* was #7a4a32 → now #5a3018 */}
             <Link to="/contact"
               className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-medium text-sm transition-all hover:scale-[1.03] shadow-xl"
               style={{
                 fontFamily: "'Jost', system-ui, sans-serif",
                 background: "white",
-                color: "#7a4a32",
+                color: "#5a3018",
                 boxShadow: "0 12px 40px rgba(90,48,32,0.25)",
               }}>
               Talk to Us <ArrowRight size={15} />

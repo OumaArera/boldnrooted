@@ -70,17 +70,20 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-10 items-center">
           <div>
             <Ornament className="text-[#c8927a]/40 w-32 mb-5" />
-            <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-[#e0b090] mb-4"
+            {/* was #e0b090 → now #f0c8a0 for stronger warmth on dark bg */}
+            <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-[#f0c8a0] mb-4"
               style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
               Psalm 1:3 · Isaiah 40:31
             </p>
             <h2 className="text-3xl sm:text-4xl font-semibold leading-tight text-white"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
               Ready to be Planted<br />
+              {/* was #e8c4a0 → kept, it reads well as display text */}
               <em className="not-italic" style={{ color: "#e8c4a0" }}>by Living Waters?</em>
             </h2>
-            <p className="text-white/45 mt-4 text-sm leading-relaxed max-w-md"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300 }}>
+            {/* was white/45 → now white/72 */}
+            <p className="text-white/72 mt-4 text-sm leading-relaxed max-w-md"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400 }}>
               Join a global movement of young believers rooted in faith, empowered by Scripture, and rising with renewed strength.
             </p>
           </div>
@@ -96,16 +99,17 @@ const Footer = () => {
               Join the Movement
               <ArrowUpRight size={15} />
             </Link>
+            {/* was white/65 border → now white/80 for more visible outline */}
             <Link to="/give"
               className="flex items-center justify-center gap-2 px-7 py-4 rounded-full text-sm font-medium transition"
               style={{
                 fontFamily: "'Jost', system-ui, sans-serif",
                 fontWeight: 400,
-                color: "rgba(255,255,255,0.65)",
-                border: "1px solid rgba(200,146,122,0.3)",
+                color: "rgba(255,255,255,0.80)",
+                border: "1px solid rgba(200,146,122,0.45)",
               }}
-              onMouseEnter={e => { e.currentTarget.style.color = "white"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.6)"; }}
-              onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.65)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.3)"; }}
+              onMouseEnter={e => { e.currentTarget.style.color = "white"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.75)"; }}
+              onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.80)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.45)"; }}
             >
               Support Our Mission
             </Link>
@@ -133,22 +137,23 @@ const Footer = () => {
               </div>
             </Link>
 
-            <p className="text-white/40 text-sm leading-relaxed mb-7 max-w-xs"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300 }}>
+            {/* was white/40 → now white/68 */}
+            <p className="text-white/68 text-sm leading-relaxed mb-7 max-w-xs"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400 }}>
               Raising a generation of young adults standing firm in faith, unwavering in truth, deeply anchored in the Word of God.
             </p>
 
-            {/* Socials */}
+            {/* Socials — was white/45 → now white/65 */}
             <div className="flex gap-3">
               {SOCIALS.map(({ icon: Icon, href, label }) => (
                 <a key={label} href={href} aria-label={label}
                   className="w-9 h-9 rounded-full flex items-center justify-center transition"
                   style={{
-                    border: "1px solid rgba(200,146,122,0.25)",
-                    color: "rgba(255,255,255,0.45)",
+                    border: "1px solid rgba(200,146,122,0.35)",
+                    color: "rgba(255,255,255,0.65)",
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.color = "#e8c4a0"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.6)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.45)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.25)"; }}
+                  onMouseEnter={e => { e.currentTarget.style.color = "#e8c4a0"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.7)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.65)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.35)"; }}
                 >
                   <Icon size={14} />
                 </a>
@@ -159,22 +164,24 @@ const Footer = () => {
           {/* link columns */}
           {Object.entries(LINKS).map(([group, items]) => (
             <div key={group}>
+              {/* was rgba(232,196,160,0.6) → now rgba(232,196,160,0.85) */}
               <p className="text-[9px] font-medium uppercase tracking-[0.28em] mb-5"
-                style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(232,196,160,0.6)" }}>
+                style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(232,196,160,0.85)" }}>
                 {group}
               </p>
               <ul className="space-y-3">
                 {items.map((item) => (
                   <li key={item.label}>
+                    {/* was white/45 → now white/68; fontWeight 300 → 400 */}
                     <Link to={item.href}
                       className="text-sm transition"
                       style={{
                         fontFamily: "'Jost', system-ui, sans-serif",
-                        fontWeight: 300,
-                        color: "rgba(255,255,255,0.45)",
+                        fontWeight: 400,
+                        color: "rgba(255,255,255,0.68)",
                       }}
-                      onMouseEnter={e => e.currentTarget.style.color = "rgba(232,196,160,0.9)"}
-                      onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.45)"}
+                      onMouseEnter={e => e.currentTarget.style.color = "rgba(232,196,160,0.95)"}
+                      onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.68)"}
                     >
                       {item.label}
                     </Link>
@@ -185,23 +192,23 @@ const Footer = () => {
           ))}
         </div>
 
-        {/* contact strip */}
+        {/* contact strip — was white/30 → now white/58 */}
         <div className="mt-14 pt-8 flex flex-wrap gap-5 text-xs"
           style={{
             borderTop: "1px solid rgba(200,146,122,0.15)",
             fontFamily: "'Jost', system-ui, sans-serif",
-            color: "rgba(255,255,255,0.3)",
+            color: "rgba(255,255,255,0.58)",
           }}>
           <a href="mailto:info@boldandrooted.org"
             className="flex items-center gap-1.5 transition"
             onMouseEnter={e => e.currentTarget.style.color = "#e8c4a0"}
-            onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.3)"}>
+            onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.58)"}>
             <Mail size={12} /> info@boldandrooted.org
           </a>
           <a href="tel:+1234567890"
             className="flex items-center gap-1.5 transition"
             onMouseEnter={e => e.currentTarget.style.color = "#e8c4a0"}
-            onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.3)"}>
+            onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.58)"}>
             <Phone size={12} /> Contact Us
           </a>
           <span className="flex items-center gap-1.5">
@@ -210,29 +217,30 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* bottom bar */}
-      <div style={{ borderTop: "1px solid rgba(200,146,122,0.12)" }}>
+      {/* bottom bar — was white/25 → now white/50 */}
+      <div style={{ borderTop: "1px solid rgba(200,146,122,0.15)" }}>
         <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px]"
-          style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(255,255,255,0.25)" }}>
+          style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(255,255,255,0.50)" }}>
           <span>© {new Date().getFullYear()} Bold & Rooted. All rights reserved.</span>
           <div className="flex items-center gap-4">
             <Link to="/privacy"
               className="transition"
-              onMouseEnter={e => e.currentTarget.style.color = "rgba(255,255,255,0.55)"}
-              onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.25)"}>
+              onMouseEnter={e => e.currentTarget.style.color = "rgba(255,255,255,0.80)"}
+              onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.50)"}>
               Privacy Policy
             </Link>
             <Link to="/terms"
               className="transition"
-              onMouseEnter={e => e.currentTarget.style.color = "rgba(255,255,255,0.55)"}
-              onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.25)"}>
+              onMouseEnter={e => e.currentTarget.style.color = "rgba(255,255,255,0.80)"}
+              onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.50)"}>
               Terms
             </Link>
+            {/* was rgba(200,146,122,0.5) → now rgba(200,146,122,0.80) */}
             <a href="https://zafrika.com" target="_blank" rel="noopener noreferrer"
               className="flex items-center gap-1 transition"
-              style={{ color: "rgba(200,146,122,0.5)" }}
+              style={{ color: "rgba(200,146,122,0.80)" }}
               onMouseEnter={e => e.currentTarget.style.color = "#c8927a"}
-              onMouseLeave={e => e.currentTarget.style.color = "rgba(200,146,122,0.5)"}>
+              onMouseLeave={e => e.currentTarget.style.color = "rgba(200,146,122,0.80)"}>
               Powered by Zafrika Tech Lab
               <ArrowUpRight size={10} />
             </a>

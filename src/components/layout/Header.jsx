@@ -75,7 +75,7 @@ const Header = () => {
                 className="block font-semibold text-lg tracking-tight leading-none transition-colors"
                 style={{
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  color: scrolled ? "#3d2214" : "#3d2214",
+                  color: "#3d2214",
                 }}
               >
                 Bold & Rooted
@@ -102,14 +102,15 @@ const Header = () => {
                   onMouseEnter={() => setOpenDropdown(item.label)}
                   onMouseLeave={() => setOpenDropdown(null)}
                 >
+                  {/* was rgba(61,34,20,0.7/0.75) → now 0.88 for both states */}
                   <button
                     className="flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium transition"
                     style={{
                       fontFamily: "'Jost', system-ui, sans-serif",
-                      color: scrolled ? "rgba(61,34,20,0.7)" : "rgba(61,34,20,0.75)",
+                      color: scrolled ? "rgba(61,34,20,0.88)" : "rgba(61,34,20,0.88)",
                     }}
                     onMouseEnter={e => e.currentTarget.style.color = "#3d2214"}
-                    onMouseLeave={e => e.currentTarget.style.color = scrolled ? "rgba(61,34,20,0.7)" : "rgba(61,34,20,0.75)"}
+                    onMouseLeave={e => e.currentTarget.style.color = "rgba(61,34,20,0.88)"}
                   >
                     {item.label}
                     <ChevronDown size={13} className={`transition-transform ${openDropdown === item.label ? "rotate-180" : ""}`} />
@@ -138,11 +139,12 @@ const Header = () => {
                             className="flex items-center gap-3 px-5 py-3 text-sm transition"
                             style={{
                               fontFamily: "'Jost', system-ui, sans-serif",
-                              color: "rgba(61,34,20,0.65)",
+                              /* was rgba(61,34,20,0.65) → now 0.80 */
+                              color: "rgba(61,34,20,0.80)",
                               fontWeight: 400,
                             }}
                             onMouseEnter={e => { e.currentTarget.style.color = "#3d2214"; e.currentTarget.style.background = "rgba(200,146,122,0.08)"; }}
-                            onMouseLeave={e => { e.currentTarget.style.color = "rgba(61,34,20,0.65)"; e.currentTarget.style.background = "transparent"; }}
+                            onMouseLeave={e => { e.currentTarget.style.color = "rgba(61,34,20,0.80)"; e.currentTarget.style.background = "transparent"; }}
                           >
                             <div className="w-1 h-1 rounded-full bg-[#c8927a] shrink-0 opacity-60" />
                             {child.label}
@@ -159,9 +161,10 @@ const Header = () => {
                   className="px-4 py-2 rounded-full text-sm font-medium transition"
                   style={{
                     fontFamily: "'Jost', system-ui, sans-serif",
+                    /* was 0.7/0.75 → now 0.88 for non-active links */
                     color: location.pathname === item.href
                       ? "#c8927a"
-                      : scrolled ? "rgba(61,34,20,0.7)" : "rgba(61,34,20,0.75)",
+                      : "rgba(61,34,20,0.88)",
                     background: location.pathname === item.href ? "rgba(200,146,122,0.1)" : "transparent",
                   }}
                 >
@@ -184,10 +187,11 @@ const Header = () => {
             >
               Join the Movement
             </Link>
+            {/* was #7a4a32 → now #5a3018 for the hamburger icon */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="lg:hidden w-10 h-10 flex items-center justify-center rounded-full transition"
-              style={{ color: "#7a4a32", border: "1px solid rgba(200,146,122,0.3)" }}
+              style={{ color: "#5a3018", border: "1px solid rgba(200,146,122,0.45)" }}
             >
               {mobileOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
@@ -203,30 +207,11 @@ const Header = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ type: "spring", damping: 28, stiffness: 220 }}
-            className="fixed inset-0 z-40 flex flex-col"
+            className="fixed top-18 left-0 right-0 bottom-0 z-40 flex flex-col lg:hidden"
             style={{ background: "#fdf6f0" }}
           >
-            {/* top gradient band */}
+            {/* gradient band at top of drawer */}
             <div className="h-0.5" style={{ background: "linear-gradient(90deg, transparent, #c8927a, #e8c4a0, #c8927a, transparent)" }} />
-
-            {/* top bar */}
-            <div className="flex items-center justify-between px-6 py-5"
-              style={{ borderBottom: "1px solid rgba(200,146,122,0.18)" }}>
-              <div className="flex items-center gap-3">
-                <img src="/logo.png" alt="Bold & Rooted" className="h-9 w-auto object-contain" />
-                <span className="font-semibold text-lg text-[#3d2214]"
-                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
-                  Bold & Rooted
-                </span>
-              </div>
-              <button
-                onClick={() => setMobileOpen(false)}
-                className="w-9 h-9 flex items-center justify-center rounded-full transition"
-                style={{ color: "#9a6a50", border: "1px solid rgba(200,146,122,0.25)" }}
-              >
-                <X size={18} />
-              </button>
-            </div>
 
             {/* links */}
             <nav className="flex-1 overflow-y-auto px-6 py-8 space-y-1">
@@ -239,8 +224,9 @@ const Header = () => {
                 >
                   {item.children ? (
                     <div>
-                      <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#c8927a]/70 px-2 pt-5 pb-2"
-                        style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+                      {/* was #c8927a/70 → now #9a6a3a solid for section headings */}
+                      <p className="text-[10px] font-medium uppercase tracking-[0.22em] px-2 pt-5 pb-2"
+                        style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#9a6a3a" }}>
                         {item.label}
                       </p>
                       {item.children.map((child) => (
@@ -248,11 +234,12 @@ const Header = () => {
                           className="flex items-center gap-3 px-4 py-3 rounded-xl text-base transition"
                           style={{
                             fontFamily: "'Jost', system-ui, sans-serif",
-                            color: "rgba(61,34,20,0.65)",
+                            /* was rgba(61,34,20,0.65) → now 0.82 */
+                            color: "rgba(61,34,20,0.82)",
                             fontWeight: 400,
                           }}
                           onMouseEnter={e => { e.currentTarget.style.color = "#3d2214"; e.currentTarget.style.background = "rgba(200,146,122,0.08)"; }}
-                          onMouseLeave={e => { e.currentTarget.style.color = "rgba(61,34,20,0.65)"; e.currentTarget.style.background = "transparent"; }}
+                          onMouseLeave={e => { e.currentTarget.style.color = "rgba(61,34,20,0.82)"; e.currentTarget.style.background = "transparent"; }}
                         >
                           <div className="w-1 h-1 rounded-full bg-[#c8927a] opacity-60" />
                           {child.label}
@@ -264,7 +251,8 @@ const Header = () => {
                       className="flex items-center px-4 py-3 rounded-xl text-base font-medium transition"
                       style={{
                         fontFamily: "'Jost', system-ui, sans-serif",
-                        color: location.pathname === item.href ? "#c8927a" : "rgba(61,34,20,0.75)",
+                        /* was rgba(61,34,20,0.75) → now 0.88 */
+                        color: location.pathname === item.href ? "#c8927a" : "rgba(61,34,20,0.88)",
                         background: location.pathname === item.href ? "rgba(200,146,122,0.08)" : "transparent",
                       }}>
                       {item.label}

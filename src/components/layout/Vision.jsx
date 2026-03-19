@@ -101,7 +101,6 @@ const Vision = () => {
         <div className="absolute top-0 left-0 right-0 h-0.5"
           style={{ background: "linear-gradient(90deg, transparent, #c8927a, #e8c4a0, #c8927a, transparent)" }} />
 
-        {/* parallax radial glow */}
         <motion.div
           className="absolute inset-0"
           style={{
@@ -110,7 +109,6 @@ const Vision = () => {
           }}
         />
 
-        {/* watermark */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
           <span className="text-[18vw] font-bold leading-none"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", color: "rgba(200,146,122,0.06)", whiteSpace: "nowrap" }}>
@@ -118,7 +116,6 @@ const Vision = () => {
           </span>
         </div>
 
-        {/* root SVG */}
         <svg className="absolute bottom-0 left-0 right-0 w-full opacity-[0.08]" viewBox="0 0 1400 220" fill="none" preserveAspectRatio="none">
           <path d="M700 0 L670 40 L620 70 L550 110 L460 145 L350 170 L220 190 L100 205 L0 220" stroke="#c8927a" strokeWidth="1.5" fill="none"/>
           <path d="M700 0 L730 40 L780 70 L850 110 L940 145 L1050 170 L1180 190 L1300 205 L1400 220" stroke="#c8927a" strokeWidth="1.5" fill="none"/>
@@ -130,11 +127,12 @@ const Vision = () => {
 
         <motion.div style={{ y: textY }} className="relative z-10 max-w-6xl mx-auto px-6 pt-36 w-full">
           <motion.div initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
+            {/* back link: was rgba(184,132,90,0.6) → now 0.85 */}
             <Link to="/about"
               className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] mb-8 transition"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(184,132,90,0.6)" }}
-              onMouseEnter={e => e.currentTarget.style.color = "#b8845a"}
-              onMouseLeave={e => e.currentTarget.style.color = "rgba(184,132,90,0.6)"}>
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(184,132,90,0.85)" }}
+              onMouseEnter={e => e.currentTarget.style.color = "#7a4a22"}
+              onMouseLeave={e => e.currentTarget.style.color = "rgba(184,132,90,0.85)"}>
               <ArrowLeft size={12} /> About
             </Link>
           </motion.div>
@@ -142,7 +140,8 @@ const Vision = () => {
           <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, delay: 0.1 }}>
             <div className="flex items-center gap-4 mb-7">
               <Ornament className="text-[#c8927a]/50 w-28" />
-              <span className="text-[#b8845a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
+              {/* was #b8845a → now #9a6a3a */}
+              <span className="text-[#9a6a3a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
                 style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                 Where We Are Going
               </span>
@@ -152,8 +151,9 @@ const Vision = () => {
               <span className="block text-[clamp(3rem,7vw,5.5rem)]">Our</span>
               <span className="block text-[clamp(3rem,7vw,5.5rem)]" style={{ color: "#c8927a" }}>Vision</span>
             </h1>
-            <p className="text-[#5a3a28]/60 text-lg mt-6 max-w-2xl leading-relaxed"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300 }}>
+            {/* was /60, weight 300 → now /85, weight 400 */}
+            <p className="text-[#5a3a28]/85 text-lg mt-6 max-w-2xl leading-relaxed"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400 }}>
               A global movement of Christians who are spiritually grounded, spiritually empowered, and spiritually fearless — believers deeply rooted in God's Word and boldly living out their faith in every area of life.
             </p>
           </motion.div>
@@ -181,15 +181,17 @@ const Vision = () => {
                 Vision Anchored In
               </span>
             </div>
+            {/* was weight 500 → now 600 */}
             <p className="text-3xl sm:text-4xl text-white leading-[1.65]"
-              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 500, fontStyle: "italic" }}>
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600, fontStyle: "italic" }}>
               "But they that wait upon the Lord shall renew their strength; they shall{" "}
-              <span style={{ color: "#e8c4a0", fontStyle: "normal", fontWeight: 600 }}>mount up with wings as eagles</span>
+              <span style={{ color: "#e8c4a0", fontStyle: "normal", fontWeight: 700 }}>mount up with wings as eagles</span>
               ; they shall run, and not be weary; and they shall walk, and not faint."
             </p>
             <Ornament className="text-[#c8927a]/35 w-36 mx-auto mt-7 mb-4" />
+            {/* was rgba(200,146,122,0.55) → now rgba(200,146,122,0.85) */}
             <p className="text-[10px] font-medium uppercase tracking-[0.25em]"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(200,146,122,0.55)" }}>
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(200,146,122,0.85)" }}>
               Isaiah 40:31 (KJV)
             </p>
           </motion.div>
@@ -202,7 +204,8 @@ const Vision = () => {
           <motion.div {...fadeUp(0)} className="mb-16">
             <div className="flex items-center gap-4 mb-5">
               <Ornament className="text-[#c8927a]/50 w-28" />
-              <span className="text-[#b8845a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
+              {/* was #b8845a → now #9a6a3a */}
+              <span className="text-[#9a6a3a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
                 style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                 The Marks of Our Vision
               </span>
@@ -221,14 +224,13 @@ const Vision = () => {
                 {...fadeUp(i * 0.08)}
                 className="group grid md:grid-cols-5 gap-0 rounded-3xl overflow-hidden transition-all"
                 style={{
-                  background: "rgba(255,255,255,0.75)",
+                  background: "rgba(255,255,255,0.85)",
                   border: "1px solid rgba(200,146,122,0.18)",
                   boxShadow: "0 2px 16px rgba(180,120,90,0.06)",
                 }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(200,146,122,0.38)"; e.currentTarget.style.boxShadow = "0 10px 40px rgba(180,120,90,0.12)"; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(200,146,122,0.18)"; e.currentTarget.style.boxShadow = "0 2px 16px rgba(180,120,90,0.06)"; }}
               >
-                {/* top accent line */}
                 <div className="md:hidden h-0.5 col-span-5"
                   style={{ background: "linear-gradient(90deg, transparent, #c8927a, #e8c4a0, transparent)" }} />
 
@@ -237,8 +239,10 @@ const Vision = () => {
                   style={{ background: v.gradient }}>
                   <div className="absolute inset-0"
                     style={{ background: "radial-gradient(circle at 50% 40%, rgba(255,255,255,0.12) 0%, transparent 65%)" }} />
-                  <v.icon size={24} className="text-white/80 mb-2 relative z-10" />
-                  <span className="text-white/60 text-[9px] font-medium uppercase tracking-[0.2em] text-center relative z-10"
+                  {/* was white/80 → now white (full) */}
+                  <v.icon size={24} className="text-white mb-2 relative z-10" />
+                  {/* was white/60 → now white/90 */}
+                  <span className="text-white/90 text-[9px] font-medium uppercase tracking-[0.2em] text-center relative z-10"
                     style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                     {String(i + 1).padStart(2, "0")}
                   </span>
@@ -250,15 +254,17 @@ const Vision = () => {
                     style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600 }}>
                     {v.headline}
                   </h3>
+                  {/* was rgba(90,58,40,0.68), weight 300 → now 0.82, weight 400 */}
                   <p className="text-sm leading-relaxed mb-5"
-                    style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(90,58,40,0.68)" }}>
+                    style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(90,58,40,0.82)" }}>
                     {v.body}
                   </p>
                   <div className="flex items-start gap-3">
                     <div className="w-0.5 h-10 shrink-0 mt-0.5 rounded-full"
                       style={{ background: "linear-gradient(to bottom, #c8927a, rgba(200,146,122,0.2))" }} />
                     <div>
-                      <p className="italic text-sm" style={{ color: "#7a4a32", fontFamily: "'EB Garamond', Georgia, serif" }}>
+                      {/* was #7a4a32 → now #5a3018 for stronger blockquote */}
+                      <p className="italic text-sm" style={{ color: "#5a3018", fontFamily: "'EB Garamond', Georgia, serif" }}>
                         "{v.verse}"
                       </p>
                       <p className="text-[10px] font-medium uppercase tracking-widest mt-1.5"
@@ -289,7 +295,8 @@ const Vision = () => {
           <motion.div {...fadeUp(0)} className="text-center mb-16">
             <div className="flex items-center justify-center gap-4 mb-5">
               <Ornament className="text-[#c8927a]/40 w-28" />
-              <span className="text-[#e0b090] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
+              {/* was #e0b090 → now #f0c8a0 */}
+              <span className="text-[#f0c8a0] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
                 style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                 Four Corners of the Earth
               </span>
@@ -299,8 +306,9 @@ const Vision = () => {
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600 }}>
               A Global Vision
             </h2>
-            <p className="text-white/45 max-w-xl mx-auto text-base"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300 }}>
+            {/* was white/45, weight 300 → now white/72, weight 400 */}
+            <p className="text-white/72 max-w-xl mx-auto text-base"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400 }}>
               Bold and Rooted exists to spread the gospel to young adults in every nation — not stopping until every soul has heard that Jesus reigns over every circumstance.
             </p>
           </motion.div>
@@ -312,24 +320,26 @@ const Vision = () => {
                 {...fadeUp(i * 0.1)}
                 className="rounded-2xl p-6 transition-all"
                 style={{
-                  background: "rgba(253,246,240,0.05)",
-                  border: "1px solid rgba(200,146,122,0.15)",
+                  background: "rgba(253,246,240,0.07)",
+                  border: "1px solid rgba(200,146,122,0.18)",
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = "rgba(253,246,240,0.08)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.38)"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "rgba(253,246,240,0.05)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.15)"; }}
+                onMouseEnter={e => { e.currentTarget.style.background = "rgba(253,246,240,0.10)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.38)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "rgba(253,246,240,0.07)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.18)"; }}
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-white font-semibold text-base"
                     style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
                     {g.region}
                   </h3>
+                  {/* was #e8c4a0 → kept; it reads well as a small badge */}
                   <span className="text-[9px] font-medium uppercase tracking-widest"
                     style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#e8c4a0" }}>
                     {g.count}
                   </span>
                 </div>
+                {/* was white/42, weight 300 → now white/68, weight 400 */}
                 <p className="text-xs leading-relaxed"
-                  style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(255,255,255,0.42)" }}>
+                  style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(255,255,255,0.68)" }}>
                   {g.desc}
                 </p>
               </motion.div>
@@ -349,7 +359,8 @@ const Vision = () => {
             <div>
               <div className="flex items-center gap-4 mb-7">
                 <Ornament className="text-[#c8927a]/50 w-28" />
-                <span className="text-[#b8845a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
+                {/* was #b8845a → now #9a6a3a */}
+                <span className="text-[#9a6a3a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
                   style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                   We Declare
                 </span>
@@ -359,8 +370,9 @@ const Vision = () => {
                 When God Plants,<br />
                 <em className="not-italic" style={{ color: "#c8927a" }}>No Force Can Uproot</em>
               </h2>
+              {/* was rgba(90,58,40,0.70) → now 0.85 */}
               <p className="leading-[1.85] text-base mb-8"
-                style={{ fontFamily: "'EB Garamond', Georgia, serif", color: "rgba(90,58,40,0.70)" }}>
+                style={{ fontFamily: "'EB Garamond', Georgia, serif", color: "rgba(90,58,40,0.85)" }}>
                 Like the trees planted in the river, we want to see young people flourishing — planted by living waters, continually nourished by the Spirit of God, bearing fruit in every season. Even in drought, remaining steadfast. Even in storms, remaining secure.
               </p>
               <Link to="/join"
@@ -381,13 +393,12 @@ const Vision = () => {
 
                 <div className="absolute inset-0"
                   style={{ background: "radial-gradient(circle at 50% 30%, rgba(200,146,122,0.08) 0%, transparent 60%)" }} />
-
-                {/* top accent */}
                 <div className="h-0.5 absolute top-0 left-0 right-0"
                   style={{ background: "linear-gradient(90deg, transparent, #c8927a, #e8c4a0, #c8927a, transparent)" }} />
 
+                {/* was rgba(232,196,160,0.5) → now rgba(232,196,160,0.80) */}
                 <p className="text-[10px] font-medium uppercase tracking-[0.3em] mb-7"
-                  style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(232,196,160,0.5)" }}>
+                  style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(232,196,160,0.80)" }}>
                   Our Declaration
                 </p>
 
@@ -399,7 +410,7 @@ const Vision = () => {
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.1 }}
                       viewport={{ once: true }}
-                      className="text-white/90"
+                      className="text-white"
                       style={{
                         fontFamily: "'Cormorant Garamond', Georgia, serif",
                         fontWeight: 600,
@@ -428,18 +439,20 @@ const Vision = () => {
       {/* ── Nav to other about pages ── */}
       <section className="py-14 parchment-bg" style={{ borderTop: "1px solid rgba(200,146,122,0.15)" }}>
         <div className="max-w-4xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-5">
+          {/* was rgba(184,132,90,0.55) → now 0.80 */}
           <Link to="/about/mission"
             className="flex items-center gap-2 text-sm font-medium transition"
-            style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(184,132,90,0.55)" }}
-            onMouseEnter={e => e.currentTarget.style.color = "#b8845a"}
-            onMouseLeave={e => e.currentTarget.style.color = "rgba(184,132,90,0.55)"}>
+            style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(184,132,90,0.80)" }}
+            onMouseEnter={e => e.currentTarget.style.color = "#7a4a22"}
+            onMouseLeave={e => e.currentTarget.style.color = "rgba(184,132,90,0.80)"}>
             <ArrowLeft size={14} /> Our Mission
           </Link>
+          {/* was #b8845a → now #9a6a3a */}
           <Link to="/about/leadership"
             className="flex items-center gap-2 text-sm font-medium transition"
-            style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#b8845a" }}
-            onMouseEnter={e => e.currentTarget.style.color = "#7a4a32"}
-            onMouseLeave={e => e.currentTarget.style.color = "#b8845a"}>
+            style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#9a6a3a" }}
+            onMouseEnter={e => e.currentTarget.style.color = "#5a3018"}
+            onMouseLeave={e => e.currentTarget.style.color = "#9a6a3a"}>
             Meet Our Leadership <ArrowRight size={14} />
           </Link>
         </div>

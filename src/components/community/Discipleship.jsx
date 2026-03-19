@@ -116,24 +116,22 @@ const TrackCard = ({ track, index }) => {
       <div
         className="rounded-3xl overflow-hidden transition-all duration-400"
         style={{
-          background: "rgba(255,255,255,0.82)",
+          background: "rgba(255,255,255,0.88)",
           border: open
-            ? "1px solid rgba(200,146,122,0.42)"
-            : "1px solid rgba(200,146,122,0.18)",
+            ? "1px solid rgba(200,146,122,0.45)"
+            : "1px solid rgba(200,146,122,0.20)",
           boxShadow: open
             ? "0 12px 48px rgba(180,120,90,0.14)"
             : "0 2px 16px rgba(180,120,90,0.06)",
           backdropFilter: "blur(8px)",
         }}
       >
-        {/* top accent line */}
         <div className="h-0.5"
           style={{ background: "linear-gradient(90deg, transparent, #c8927a, #e8c4a0, transparent)" }} />
 
         <button className="w-full text-left" onClick={() => setOpen(!open)}>
           <div className="p-7">
             <div className="flex items-start gap-5">
-              {/* emoji icon */}
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shrink-0 shadow-md"
                 style={{ background: track.gradient }}>
                 {track.icon}
@@ -143,14 +141,15 @@ const TrackCard = ({ track, index }) => {
                 <div className="flex items-center gap-2 flex-wrap mb-1">
                   <span className="text-[9px] font-medium uppercase tracking-[0.2em] px-2.5 py-1 rounded-full"
                     style={{
-                      backgroundColor: `${track.accent}22`,
+                      backgroundColor: `${track.accent}28`,
                       color: track.accent,
                       fontFamily: "'Jost', system-ui, sans-serif",
                     }}>
                     {track.level}
                   </span>
+                  {/* was rgba(90,58,40,0.4) → now 0.68 */}
                   <span className="text-[9px] font-medium"
-                    style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.4)" }}>
+                    style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.68)" }}>
                     {track.weeks} Weeks · {track.modules.length} Modules
                   </span>
                 </div>
@@ -158,19 +157,21 @@ const TrackCard = ({ track, index }) => {
                   style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600 }}>
                   {track.title}
                 </h3>
+                {/* was rgba(90,58,40,0.5), weight 300 → now 0.72, weight 400 */}
                 <p className="text-sm mt-0.5"
-                  style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(90,58,40,0.5)" }}>
+                  style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(90,58,40,0.72)" }}>
                   {track.subtitle}
                 </p>
               </div>
 
+              {/* expand chevron — was rgba(200,146,122,0.6) → now 0.85 */}
               <motion.div
                 animate={{ rotate: open ? 90 : 0 }}
                 transition={{ duration: 0.25 }}
                 className="shrink-0 w-9 h-9 rounded-full flex items-center justify-center mt-1 transition"
                 style={{
-                  border: "1px solid rgba(200,146,122,0.25)",
-                  color: "rgba(200,146,122,0.6)",
+                  border: "1px solid rgba(200,146,122,0.35)",
+                  color: "rgba(200,146,122,0.85)",
                 }}
               >
                 <ChevronRight size={15} />
@@ -180,8 +181,9 @@ const TrackCard = ({ track, index }) => {
             {/* progress bar */}
             <div className="mt-5">
               <div className="flex items-center justify-between mb-2">
+                {/* was rgba(90,58,40,0.4) → now 0.65 */}
                 <span className="text-[10px] font-medium"
-                  style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.4)" }}>
+                  style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.65)" }}>
                   {completed}/{track.modules.length} completed
                 </span>
                 <span className="text-[10px] font-semibold"
@@ -190,7 +192,7 @@ const TrackCard = ({ track, index }) => {
                 </span>
               </div>
               <div className="h-1.5 rounded-full overflow-hidden"
-                style={{ background: "rgba(200,146,122,0.12)" }}>
+                style={{ background: "rgba(200,146,122,0.14)" }}>
                 <motion.div
                   className="h-full rounded-full"
                   style={{ background: `linear-gradient(90deg, ${track.accent}, ${track.accent}88)` }}
@@ -217,15 +219,17 @@ const TrackCard = ({ track, index }) => {
               <div className="px-7 pb-7 pt-1 space-y-6"
                 style={{ borderTop: "1px solid rgba(200,146,122,0.15)" }}>
 
+                {/* was rgba(90,58,40,0.75) → now 0.88 */}
                 <p className="text-sm leading-[1.85] pt-4"
-                  style={{ fontFamily: "'EB Garamond', Georgia, serif", color: "rgba(90,58,40,0.75)" }}>
+                  style={{ fontFamily: "'EB Garamond', Georgia, serif", color: "rgba(90,58,40,0.88)" }}>
                   {track.description}
                 </p>
 
                 {/* modules list */}
                 <div>
+                  {/* was rgba(90,58,40,0.4) → now 0.65 */}
                   <p className="text-[10px] font-medium uppercase tracking-[0.22em] mb-4"
-                    style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.4)" }}>
+                    style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.65)" }}>
                     Course Modules
                   </p>
                   <div className="space-y-2">
@@ -235,53 +239,56 @@ const TrackCard = ({ track, index }) => {
                         <div key={i}
                           className="flex items-center gap-4 p-3.5 rounded-xl transition"
                           style={{
-                            opacity: mod.locked ? 0.45 : 1,
+                            opacity: mod.locked ? 0.50 : 1,
                             cursor: mod.locked ? "not-allowed" : mod.completed ? "default" : "pointer",
                             background: mod.completed
-                              ? "rgba(140,180,140,0.1)"
+                              ? "rgba(140,180,140,0.12)"
                               : mod.locked
                               ? "rgba(200,146,122,0.04)"
-                              : "rgba(200,146,122,0.06)",
+                              : "rgba(200,146,122,0.07)",
                             border: mod.completed
-                              ? "1px solid rgba(140,180,140,0.25)"
+                              ? "1px solid rgba(140,180,140,0.28)"
                               : "1px solid transparent",
                           }}
                         >
                           <div className="shrink-0">
                             {mod.locked ? (
-                              <Lock size={14} style={{ color: "rgba(90,58,40,0.3)" }} />
+                              /* was rgba(90,58,40,0.3) → now 0.50 */
+                              <Lock size={14} style={{ color: "rgba(90,58,40,0.50)" }} />
                             ) : mod.completed ? (
-                              <CheckCircle2 size={14} style={{ color: "#6a9868" }} />
+                              <CheckCircle2 size={14} style={{ color: "#5a8848" }} />
                             ) : (
-                              <Circle size={14} style={{ color: "rgba(200,146,122,0.5)" }} />
+                              <Circle size={14} style={{ color: "rgba(200,146,122,0.65)" }} />
                             )}
                           </div>
                           <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
                             style={{
                               background: mod.completed
                                 ? "rgba(140,180,140,0.15)"
-                                : "rgba(255,255,255,0.8)",
-                              border: `1px solid ${mod.completed ? "rgba(140,180,140,0.3)" : "rgba(200,146,122,0.2)"}`,
+                                : "rgba(255,255,255,0.9)",
+                              border: `1px solid ${mod.completed ? "rgba(140,180,140,0.35)" : "rgba(200,146,122,0.25)"}`,
                             }}>
-                            <ModIcon size={12} style={{ color: mod.completed ? "#6a9868" : "rgba(200,146,122,0.7)" }} />
+                            <ModIcon size={12} style={{ color: mod.completed ? "#5a8848" : "rgba(200,146,122,0.80)" }} />
                           </div>
                           <span className="flex-1 text-sm"
                             style={{
                               fontFamily: "'Jost', system-ui, sans-serif",
                               fontWeight: mod.completed ? 300 : 400,
-                              color: mod.completed ? "rgba(106,152,104,0.8)" : "#3d2214",
+                              color: mod.completed ? "rgba(90,136,80,0.85)" : "#3d2214",
                               textDecoration: mod.completed ? "line-through" : "none",
-                              textDecorationColor: "rgba(106,152,104,0.4)",
+                              textDecorationColor: "rgba(90,136,80,0.4)",
                             }}>
                             {String(i + 1).padStart(2, "0")}. {mod.title}
                           </span>
                           <div className="flex items-center gap-2 shrink-0">
+                            {/* was rgba(90,58,40,0.35) → now 0.58 */}
                             <span className="text-[9px] font-medium uppercase hidden sm:block"
-                              style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.35)" }}>
+                              style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.58)" }}>
                               {MODULE_LABELS[mod.type]}
                             </span>
+                            {/* was rgba(90,58,40,0.4) → now 0.62 */}
                             <span className="text-[10px]"
-                              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(90,58,40,0.4)" }}>
+                              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(90,58,40,0.62)" }}>
                               {mod.duration}
                             </span>
                           </div>
@@ -291,15 +298,17 @@ const TrackCard = ({ track, index }) => {
                   </div>
                 </div>
 
-                {/* verse */}
+                {/* verse in dark card */}
                 <div className="rounded-2xl p-5"
                   style={{ background: "linear-gradient(145deg, #3d2214, #5a3020)" }}>
+                  {/* was rgba(232,196,160,0.85) → now 0.95 */}
                   <p className="italic text-sm leading-relaxed mb-2"
-                    style={{ color: "rgba(232,196,160,0.85)", fontFamily: "'EB Garamond', Georgia, serif" }}>
+                    style={{ color: "rgba(232,196,160,0.95)", fontFamily: "'EB Garamond', Georgia, serif" }}>
                     "{track.verse}"
                   </p>
+                  {/* was rgba(200,146,122,0.55) → now 0.85 */}
                   <p className="text-[10px] font-medium uppercase tracking-widest"
-                    style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(200,146,122,0.55)" }}>
+                    style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(200,146,122,0.85)" }}>
                     — {track.verseRef}
                   </p>
                 </div>
@@ -349,7 +358,6 @@ const Discipleship = () => {
         <div className="absolute top-0 left-0 right-0 h-0.5"
           style={{ background: "linear-gradient(90deg, transparent, #c8927a, #e8c4a0, #c8927a, transparent)" }} />
 
-        {/* watermark */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
           <span className="text-[18vw] font-bold leading-none"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", color: "rgba(200,146,122,0.06)", whiteSpace: "nowrap" }}>
@@ -357,15 +365,12 @@ const Discipleship = () => {
           </span>
         </div>
 
-        {/* warm radial glow */}
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-150 h-75 rounded-full"
           style={{ background: "radial-gradient(ellipse, rgba(200,146,122,0.15) 0%, transparent 70%)" }} />
 
-        {/* horizontal light lines */}
         <div className="absolute inset-0 opacity-[0.03]"
           style={{ backgroundImage: "repeating-linear-gradient(0deg, #c8927a 0, #c8927a 1px, transparent 1px, transparent 40px)" }} />
 
-        {/* root SVG */}
         <svg className="absolute bottom-0 left-0 right-0 w-full opacity-[0.08]" viewBox="0 0 1400 170" fill="none" preserveAspectRatio="none">
           <path d="M700 0 L680 28 L645 52 L598 80 L540 108 L470 132 L388 150 L290 163 L180 170 L0 170" stroke="#c8927a" strokeWidth="1.5" fill="none"/>
           <path d="M700 0 L720 28 L755 52 L802 80 L860 108 L930 132 L1012 150 L1110 163 L1220 170 L1400 170" stroke="#c8927a" strokeWidth="1.5" fill="none"/>
@@ -377,7 +382,8 @@ const Discipleship = () => {
           <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }}>
             <div className="flex items-center gap-4 mb-6">
               <Ornament className="text-[#c8927a]/50 w-28" />
-              <span className="text-[#b8845a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
+              {/* was #b8845a → now #9a6a3a */}
+              <span className="text-[#9a6a3a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
                 style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                 Iron Sharpens Iron
               </span>
@@ -387,15 +393,16 @@ const Discipleship = () => {
               <span className="block text-[clamp(3rem,7vw,5.5rem)]">Discipleship</span>
               <span className="block text-[clamp(3rem,7vw,5.5rem)]" style={{ color: "#c8927a" }}>Pathways</span>
             </h1>
-            <p className="text-[#5a3a28]/60 text-base max-w-xl leading-relaxed"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300 }}>
+            {/* was /60, weight 300 → now /85, weight 400 */}
+            <p className="text-[#5a3a28]/85 text-base max-w-xl leading-relaxed"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400 }}>
               Structured, Scripture-based tracks that take you from first steps of faith to seasoned disciple-maker — with a community walking beside you every step.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* ── How it works ── */}
+      {/* ── How it works (dark section) ── */}
       <section className="py-24 relative overflow-hidden"
         style={{ background: "linear-gradient(160deg, #3d2214 0%, #5a3020 55%, #3d2214 100%)" }}>
 
@@ -410,7 +417,8 @@ const Discipleship = () => {
           <motion.div {...fadeUp(0)} className="text-center mb-14">
             <div className="flex items-center justify-center gap-4 mb-5">
               <Ornament className="text-[#c8927a]/40 w-28" />
-              <span className="text-[#e0b090] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
+              {/* was #e0b090 → now #f0c8a0 */}
+              <span className="text-[#f0c8a0] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
                 style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                 How It Works
               </span>
@@ -420,8 +428,9 @@ const Discipleship = () => {
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600 }}>
               From Seed to Tree
             </h2>
-            <p className="text-white/42 mt-4 max-w-lg mx-auto text-sm"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300 }}>
+            {/* was white/42, weight 300 → now white/70, weight 400 */}
+            <p className="text-white/70 mt-4 max-w-lg mx-auto text-sm"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400 }}>
               Our three-track system mirrors the growth of a tree — rooted, growing, and bearing fruit. Start where you are. Go where God calls you.
             </p>
           </motion.div>
@@ -436,8 +445,8 @@ const Discipleship = () => {
               <motion.div key={i} {...fadeUp(i * 0.1)}
                 className="text-center rounded-2xl p-7 transition-all"
                 style={{
-                  background: "rgba(253,246,240,0.05)",
-                  border: "1px solid rgba(200,146,122,0.15)",
+                  background: "rgba(253,246,240,0.07)",
+                  border: "1px solid rgba(200,146,122,0.18)",
                 }}>
                 <span className="text-4xl block mb-4">{t.emoji}</span>
                 <p className="text-[9px] font-medium uppercase tracking-widest mb-2"
@@ -448,8 +457,9 @@ const Discipleship = () => {
                   style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600 }}>
                   {t.label}
                 </h3>
+                {/* was rgba(255,255,255,0.42), weight 300 → now 0.68, weight 400 */}
                 <p className="text-xs"
-                  style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(255,255,255,0.42)" }}>
+                  style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(255,255,255,0.68)" }}>
                   {t.desc}
                 </p>
               </motion.div>
@@ -462,19 +472,21 @@ const Discipleship = () => {
               <motion.div key={i} {...fadeUp(i * 0.08)}
                 className="rounded-2xl p-5 transition-all"
                 style={{
-                  background: "rgba(253,246,240,0.05)",
-                  border: "1px solid rgba(200,146,122,0.15)",
+                  background: "rgba(253,246,240,0.07)",
+                  border: "1px solid rgba(200,146,122,0.18)",
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = "rgba(253,246,240,0.08)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.35)"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "rgba(253,246,240,0.05)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.15)"; }}
+                onMouseEnter={e => { e.currentTarget.style.background = "rgba(253,246,240,0.10)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.38)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "rgba(253,246,240,0.07)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.18)"; }}
               >
+                {/* icon stays #e8c4a0 — already readable */}
                 <f.icon size={18} className="mb-3" style={{ color: "#e8c4a0" }} />
                 <h3 className="text-white text-sm mb-1.5"
                   style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600 }}>
                   {f.title}
                 </h3>
+                {/* was rgba(255,255,255,0.4), weight 300 → now 0.68, weight 400 */}
                 <p className="text-xs leading-relaxed"
-                  style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(255,255,255,0.4)" }}>
+                  style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(255,255,255,0.68)" }}>
                   {f.desc}
                 </p>
               </motion.div>
@@ -483,13 +495,14 @@ const Discipleship = () => {
         </div>
       </section>
 
-      {/* ── Tracks ── */}
+      {/* ── Tracks (light section) ── */}
       <section className="py-24 parchment-bg">
         <div className="max-w-5xl mx-auto px-6">
           <motion.div {...fadeUp(0)} className="mb-12">
             <div className="flex items-center gap-4 mb-5">
               <Ornament className="text-[#c8927a]/50 w-28" />
-              <span className="text-[#b8845a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
+              {/* was #b8845a → now #9a6a3a */}
+              <span className="text-[#9a6a3a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
                 style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                 Choose Your Path
               </span>
@@ -499,8 +512,9 @@ const Discipleship = () => {
               The Three<br />
               <em className="not-italic" style={{ color: "#c8927a" }}>Discipleship Tracks</em>
             </h2>
+            {/* was rgba(90,58,40,0.65), weight 300 → now 0.82, weight 400 */}
             <p className="mt-4 max-w-lg text-base"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(90,58,40,0.65)" }}>
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(90,58,40,0.82)" }}>
               Each track builds on the last. Click any track to explore the modules, unlock the curriculum, and enrol.
             </p>
           </motion.div>
@@ -513,7 +527,7 @@ const Discipleship = () => {
         </div>
       </section>
 
-      {/* ── 2 Tim 2:2 — anchor CTA ── */}
+      {/* ── CTA (terracotta) ── */}
       <section className="py-24 relative overflow-hidden"
         style={{ background: "linear-gradient(135deg, #c8927a 0%, #d4a882 45%, #c0927a 100%)" }}>
 
@@ -526,37 +540,41 @@ const Discipleship = () => {
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <motion.div {...fadeUp(0)}>
-            <Ornament className="text-white/30 w-40 mx-auto mb-8" />
+            <Ornament className="text-white/35 w-40 mx-auto mb-8" />
 
-            <p className="text-white/60 text-[10px] font-medium uppercase tracking-[0.3em] mb-8"
+            {/* was white/60 → now white/88 */}
+            <p className="text-white/88 text-[10px] font-medium uppercase tracking-[0.3em] mb-8"
               style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
               The Heart of Discipleship
             </p>
             <p className="text-3xl sm:text-4xl text-white leading-[1.6] mb-8"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 500, fontStyle: "italic" }}>
               "The same commit thou to faithful men, who shall be able to{" "}
-              <span className="not-italic font-semibold" style={{ color: "rgba(255,255,255,0.95)" }}>
+              <span className="not-italic font-semibold" style={{ color: "rgba(255,255,255,0.98)" }}>
                 teach others also.
               </span>"
             </p>
-            <Ornament className="text-white/25 w-36 mx-auto mb-5" />
-            <p className="text-white/50 text-xs font-medium uppercase tracking-[0.25em]"
+            <Ornament className="text-white/30 w-36 mx-auto mb-5" />
+            {/* was white/50 → now white/80 */}
+            <p className="text-white/80 text-xs font-medium uppercase tracking-[0.25em]"
               style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
               2 Timothy 2:2
             </p>
 
             <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+              {/* was #7a4a32 → now #5a3018 */}
               <Link to="/discipleship/foundations/enroll"
                 className="flex items-center gap-2 px-8 py-4 rounded-full bg-white font-medium text-sm hover:bg-[#fdf6f0] hover:scale-[1.03] transition-all shadow-xl"
                 style={{
                   fontFamily: "'Jost', system-ui, sans-serif",
-                  color: "#7a4a32",
+                  color: "#5a3018",
                   boxShadow: "0 12px 40px rgba(90,48,32,0.2)",
                 }}>
                 Begin Your Journey <ArrowRight size={15} />
               </Link>
+              {/* was border-white/30 → now border-white/55 */}
               <Link to="/programs"
-                className="flex items-center gap-2 px-8 py-4 rounded-full font-medium text-sm border-2 border-white/30 text-white hover:border-white/55 transition"
+                className="flex items-center gap-2 px-8 py-4 rounded-full font-medium text-sm border-2 border-white/55 text-white hover:border-white/80 transition"
                 style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                 Explore All Programs <ArrowRight size={15} />
               </Link>

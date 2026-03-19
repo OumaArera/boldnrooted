@@ -114,7 +114,8 @@ const About = () => {
 
             <div className="flex items-center gap-4 mb-7">
               <Ornament className="text-[#c8927a]/50 w-28" />
-              <span className="text-[#b8845a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
+              {/* was #b8845a → now #9a6a3a */}
+              <span className="text-[#9a6a3a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
                 style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                 Who We Are
               </span>
@@ -126,8 +127,9 @@ const About = () => {
               <span className="block text-[clamp(3rem,7vw,5.5rem)]" style={{ color: "#c8927a" }}>Bold & Rooted</span>
             </h1>
 
-            <p className="text-[#5a3a28]/60 text-lg max-w-2xl leading-relaxed"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300 }}>
+            {/* was /60, fontWeight 300 → now /85, fontWeight 400 */}
+            <p className="text-[#5a3a28]/85 text-lg max-w-2xl leading-relaxed"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400 }}>
               A faith movement born out of the conviction that this generation can be different — deeply rooted, boldly alive, and genuinely transformed by the gospel of Jesus Christ.
             </p>
           </motion.div>
@@ -143,7 +145,7 @@ const About = () => {
                 <Link to={page.href} className="group block">
                   <div className="rounded-3xl overflow-hidden transition-all"
                     style={{
-                      background: "rgba(255,255,255,0.75)",
+                      background: "rgba(255,255,255,0.85)",
                       border: "1px solid rgba(200,146,122,0.18)",
                       boxShadow: "0 2px 20px rgba(180,120,90,0.07)",
                       backdropFilter: "blur(8px)",
@@ -175,7 +177,8 @@ const About = () => {
                           }}>
                           <page.icon size={22} className="text-white" />
                         </div>
-                        <span className="text-white/65 text-[9px] font-medium uppercase tracking-[0.22em] text-center mt-1"
+                        {/* was white/65 → now white/90 */}
+                        <span className="text-white/90 text-[9px] font-medium uppercase tracking-[0.22em] text-center mt-1"
                           style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                           {page.label}
                         </span>
@@ -192,11 +195,12 @@ const About = () => {
                             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600 }}>
                             {page.headline}
                           </h3>
+                          {/* was rgba(90,58,40,0.65), fontWeight 300 → now 0.82, fontWeight 400 */}
                           <p className="text-sm leading-relaxed max-w-xl"
                             style={{
                               fontFamily: "'Jost', system-ui, sans-serif",
-                              fontWeight: 300,
-                              color: "rgba(90,58,40,0.65)",
+                              fontWeight: 400,
+                              color: "rgba(90,58,40,0.82)",
                             }}>
                             {page.teaser}
                           </p>
@@ -238,15 +242,17 @@ const About = () => {
           <motion.div {...fadeUp(0)}>
             <Ornament className="text-[#c8927a]/40 w-40 mx-auto mb-7" />
 
+            {/* was #e0b090 → now #f0c8a0 */}
             <p className="text-[10px] font-medium uppercase tracking-[0.3em] mb-7"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#e0b090" }}>
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#f0c8a0" }}>
               The Foundation
             </p>
 
+            {/* was fontWeight 500 → now 600 for stronger body on dark bg */}
             <p className="text-2xl sm:text-3xl text-white leading-[1.75] mb-10"
-              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 500, fontStyle: "italic" }}>
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600, fontStyle: "italic" }}>
               Bold and Rooted was born from the belief that a generation raised on the uncompromised Word of God, in genuine community, with a heart for the nations — is a generation{" "}
-              <span style={{ color: "#e8c4a0", fontStyle: "normal", fontWeight: 600 }}>the world has yet to see.</span>
+              <span style={{ color: "#e8c4a0", fontStyle: "normal", fontWeight: 700 }}>the world has yet to see.</span>
             </p>
 
             <Link to="/about/mission"

@@ -15,7 +15,6 @@ const PRAYER_REQUESTS = [
   { id: 8, name: "Daniel P.", location: "Toronto, Canada", category: "Provision", time: "3 days ago", text: "Grad school fees are due and I have nothing. I believe in Jehovah Jireh. Please agree with me in faith.", prayed: 44, anonymous: false, answered: false },
 ];
 
-// Aligned with Discipleship's warm mahogany/terracotta palette
 const CATEGORY_COLORS = {
   Healing:     { bg: "rgba(200,146,122,0.10)", text: "#c8927a",  dot: "#c8927a" },
   Provision:   { bg: "rgba(196,168,130,0.12)", text: "#b09070",  dot: "#c4a882" },
@@ -56,18 +55,17 @@ const PrayerCard = ({ req, onPray }) => {
       transition={{ duration: 0.4 }}
       className="overflow-hidden transition-all"
       style={{
-        background: "rgba(255,252,248,0.88)",
+        background: "rgba(255,252,248,0.92)",
         borderRadius: "1.5rem",
         border: req.answered
-          ? "1px solid rgba(140,180,140,0.35)"
-          : "1px solid rgba(200,146,122,0.18)",
+          ? "1px solid rgba(140,180,140,0.40)"
+          : "1px solid rgba(200,146,122,0.22)",
         boxShadow: req.answered
           ? "0 2px 20px rgba(140,180,140,0.10)"
           : "0 2px 16px rgba(90,48,32,0.06)",
         backdropFilter: "blur(8px)",
       }}
     >
-      {/* top accent line */}
       <div className="h-0.5" style={{
         background: req.answered
           ? "linear-gradient(90deg, transparent, #8ab888, transparent)"
@@ -93,7 +91,8 @@ const PrayerCard = ({ req, onPray }) => {
               <p className="text-sm font-semibold" style={{ color: "#3d2214", fontFamily: "'Jost', system-ui, sans-serif" }}>
                 {req.name}
               </p>
-              <p className="text-[10px]" style={{ color: "rgba(90,58,40,0.42)", fontFamily: "'Jost', system-ui, sans-serif" }}>
+              {/* was rgba(90,58,40,0.42) → now 0.65 */}
+              <p className="text-[10px]" style={{ color: "rgba(90,58,40,0.65)", fontFamily: "'Jost', system-ui, sans-serif" }}>
                 {req.location} · {req.time}
               </p>
             </div>
@@ -105,9 +104,9 @@ const PrayerCard = ({ req, onPray }) => {
                 className="text-[9px] font-semibold uppercase tracking-widest px-2.5 py-1 rounded-full"
                 style={{
                   fontFamily: "'Jost', system-ui, sans-serif",
-                  background: "rgba(140,180,140,0.15)",
-                  color: "#6a9868",
-                  border: "1px solid rgba(140,180,140,0.3)",
+                  background: "rgba(140,180,140,0.18)",
+                  color: "#5a8848",
+                  border: "1px solid rgba(140,180,140,0.35)",
                 }}
               >
                 Answered ✓
@@ -119,7 +118,7 @@ const PrayerCard = ({ req, onPray }) => {
                 fontFamily: "'Jost', system-ui, sans-serif",
                 background: col.bg,
                 color: col.text,
-                border: `1px solid ${col.dot}30`,
+                border: `1px solid ${col.dot}45`,
               }}
             >
               {req.category}
@@ -127,17 +126,18 @@ const PrayerCard = ({ req, onPray }) => {
           </div>
         </div>
 
-        {/* prayer text */}
+        {/* prayer text — was rgba(90,58,40,0.78) → now 0.88 */}
         <p
           className="text-sm leading-[1.85] mb-5"
-          style={{ fontFamily: "'EB Garamond', Georgia, serif", color: "rgba(90,58,40,0.78)" }}
+          style={{ fontFamily: "'EB Garamond', Georgia, serif", color: "rgba(90,58,40,0.88)" }}
         >
           {req.text}
         </p>
 
         {/* footer */}
         <div className="flex items-center justify-between">
-          <span className="flex items-center gap-1.5 text-xs" style={{ color: "rgba(90,58,40,0.38)", fontFamily: "'Jost', system-ui, sans-serif" }}>
+          {/* was rgba(90,58,40,0.38) → now 0.62 */}
+          <span className="flex items-center gap-1.5 text-xs" style={{ color: "rgba(90,58,40,0.62)", fontFamily: "'Jost', system-ui, sans-serif" }}>
             <Flame size={12} style={{ color: "#c8927a" }} />
             {req.prayed + (prayed ? 1 : 0)} praying
           </span>
@@ -150,18 +150,19 @@ const PrayerCard = ({ req, onPray }) => {
               fontFamily: "'Jost', system-ui, sans-serif",
               ...(prayed
                 ? {
-                    background: "rgba(140,180,140,0.12)",
-                    color: "#6a9868",
-                    border: "1px solid rgba(140,180,140,0.3)",
+                    background: "rgba(140,180,140,0.14)",
+                    color: "#5a8848",
+                    border: "1px solid rgba(140,180,140,0.35)",
                   }
                 : {
-                    background: "rgba(200,146,122,0.10)",
-                    color: "#8b5a3a",
-                    border: "1px solid rgba(200,146,122,0.28)",
+                    background: "rgba(200,146,122,0.12)",
+                    /* was #8b5a3a → now #6a3a18 for stronger contrast */
+                    color: "#6a3a18",
+                    border: "1px solid rgba(200,146,122,0.35)",
                   }),
             }}
             onMouseEnter={e => { if (!prayed) { e.currentTarget.style.background = "#c8927a"; e.currentTarget.style.color = "#fff"; e.currentTarget.style.border = "1px solid #c8927a"; } }}
-            onMouseLeave={e => { if (!prayed) { e.currentTarget.style.background = "rgba(200,146,122,0.10)"; e.currentTarget.style.color = "#8b5a3a"; e.currentTarget.style.border = "1px solid rgba(200,146,122,0.28)"; } }}
+            onMouseLeave={e => { if (!prayed) { e.currentTarget.style.background = "rgba(200,146,122,0.12)"; e.currentTarget.style.color = "#6a3a18"; e.currentTarget.style.border = "1px solid rgba(200,146,122,0.35)"; } }}
           >
             {prayed ? <><Check size={12} /> Prayed</> : <><HandHeart size={12} /> Pray</>}
           </button>
@@ -229,122 +230,120 @@ const PrayerWall = () => {
         }
       `}</style>
 
-      {/* ── Hero — deep mahogany, matches Discipleship dark section ── */}
+      {/* ── Hero ── */}
       <section
-  className="relative min-h-[62vh] flex items-end overflow-hidden pb-20"
-  style={{ background: "linear-gradient(160deg, #f5e8da 0%, #ecddc8 60%, #f0e0ce 100%)" }}
->
-  <div className="absolute inset-0 paper-texture opacity-60" />
+        className="relative min-h-[62vh] flex items-end overflow-hidden pb-20"
+        style={{ background: "linear-gradient(160deg, #f5e8da 0%, #ecddc8 60%, #f0e0ce 100%)" }}
+      >
+        <div className="absolute inset-0 paper-texture opacity-60" />
 
-  {/* top accent line */}
-  <div className="absolute top-0 left-0 right-0 h-0.5"
-    style={{ background: "linear-gradient(90deg, transparent, #c8927a, #e8c4a0, #c8927a, transparent)" }} />
+        <div className="absolute top-0 left-0 right-0 h-0.5"
+          style={{ background: "linear-gradient(90deg, transparent, #c8927a, #e8c4a0, #c8927a, transparent)" }} />
 
-  {/* watermark */}
-  <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-    <span className="text-[16vw] font-bold leading-none"
-      style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", color: "rgba(200,146,122,0.06)", whiteSpace: "nowrap" }}>
-      ORATIO
-    </span>
-  </div>
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+          <span className="text-[16vw] font-bold leading-none"
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", color: "rgba(200,146,122,0.06)", whiteSpace: "nowrap" }}>
+            ORATIO
+          </span>
+        </div>
 
-  {/* warm glow */}
-  <div className="absolute top-1/3 right-1/4 w-96 h-96 rounded-full"
-    style={{ background: "radial-gradient(circle, rgba(200,146,122,0.12) 0%, transparent 70%)" }} />
+        <div className="absolute top-1/3 right-1/4 w-96 h-96 rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(200,146,122,0.12) 0%, transparent 70%)" }} />
 
-  {/* root SVG */}
-  <svg className="absolute bottom-0 left-0 right-0 w-full opacity-[0.08]" viewBox="0 0 1400 120" fill="none" preserveAspectRatio="none">
-    <path d="M700 0 L650 30 L580 58 L490 85 L380 105 L250 116 L100 120 L0 120" stroke="#c8927a" strokeWidth="1.5" fill="none"/>
-    <path d="M700 0 L750 30 L820 58 L910 85 L1020 105 L1150 116 L1300 120 L1400 120" stroke="#c8927a" strokeWidth="1.5" fill="none"/>
-    <path d="M700 0 L695 40 L678 80 L654 108 L628 120" stroke="#e8c4a0" strokeWidth="0.8" fill="none"/>
-    <path d="M700 0 L705 40 L722 80 L746 108 L772 120" stroke="#e8c4a0" strokeWidth="0.8" fill="none"/>
-  </svg>
+        <svg className="absolute bottom-0 left-0 right-0 w-full opacity-[0.08]" viewBox="0 0 1400 120" fill="none" preserveAspectRatio="none">
+          <path d="M700 0 L650 30 L580 58 L490 85 L380 105 L250 116 L100 120 L0 120" stroke="#c8927a" strokeWidth="1.5" fill="none"/>
+          <path d="M700 0 L750 30 L820 58 L910 85 L1020 105 L1150 116 L1300 120 L1400 120" stroke="#c8927a" strokeWidth="1.5" fill="none"/>
+          <path d="M700 0 L695 40 L678 80 L654 108 L628 120" stroke="#e8c4a0" strokeWidth="0.8" fill="none"/>
+          <path d="M700 0 L705 40 L722 80 L746 108 L772 120" stroke="#e8c4a0" strokeWidth="0.8" fill="none"/>
+        </svg>
 
-  <div className="relative z-10 max-w-6xl mx-auto px-6 pt-36 w-full">
-    <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }}>
+        <div className="relative z-10 max-w-6xl mx-auto px-6 pt-36 w-full">
+          <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }}>
 
-      {/* ornament + label */}
-      <div className="flex items-center gap-4 mb-6">
-        <Ornament className="text-[#c8927a]/50 w-28" />
-        <span className="text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
-          style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#b8845a" }}>
-          The Body of Christ
-        </span>
-      </div>
+            <div className="flex items-center gap-4 mb-6">
+              <Ornament className="text-[#c8927a]/50 w-28" />
+              {/* was #b8845a → now #9a6a3a */}
+              <span className="text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
+                style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#9a6a3a" }}>
+                The Body of Christ
+              </span>
+            </div>
 
-      <h1 className="leading-none tracking-tight mb-5"
-        style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600, color: "#3d2214" }}>
-        <span className="block" style={{ fontSize: "clamp(3rem,7vw,5.5rem)" }}>The</span>
-        <span className="block" style={{ fontSize: "clamp(3rem,7vw,5.5rem)", color: "#c8927a" }}>Prayer Wall</span>
-      </h1>
+            <h1 className="leading-none tracking-tight mb-5"
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600, color: "#3d2214" }}>
+              <span className="block" style={{ fontSize: "clamp(3rem,7vw,5.5rem)" }}>The</span>
+              <span className="block" style={{ fontSize: "clamp(3rem,7vw,5.5rem)", color: "#c8927a" }}>Prayer Wall</span>
+            </h1>
 
-      <p className="text-base leading-relaxed max-w-xl mb-10"
-        style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(90,58,40,0.6)" }}>
-        Bring your burdens. Carry one another's. This is the place where the body of Christ stands together in faith, believing that God hears every prayer.
-      </p>
+            {/* was rgba(90,58,40,0.6), weight 300 → now 0.85, weight 400 */}
+            <p className="text-base leading-relaxed max-w-xl mb-10"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(90,58,40,0.85)" }}>
+              Bring your burdens. Carry one another's. This is the place where the body of Christ stands together in faith, believing that God hears every prayer.
+            </p>
 
-      {/* live badge */}
-      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8"
-        style={{ background: "rgba(200,146,122,0.10)", border: "1px solid rgba(200,146,122,0.28)" }}>
-        <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#c8927a" }} />
-        <span className="text-[10px] font-medium uppercase tracking-[0.22em]"
-          style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#b8845a" }}>
-          Live · {requests.length} Requests · {totalPraying.toLocaleString()} Prayers Offered
-        </span>
-      </div>
+            {/* live badge — was #b8845a → now #9a6a3a */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8"
+              style={{ background: "rgba(200,146,122,0.12)", border: "1px solid rgba(200,146,122,0.32)" }}>
+              <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#c8927a" }} />
+              <span className="text-[10px] font-medium uppercase tracking-[0.22em]"
+                style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#9a6a3a" }}>
+                Live · {requests.length} Requests · {totalPraying.toLocaleString()} Prayers Offered
+              </span>
+            </div>
 
-      <div className="flex flex-col sm:flex-row items-start gap-3">
-        <button
-          onClick={() => setShowForm(true)}
-          className="flex items-center gap-2 px-7 py-4 rounded-full text-white font-medium text-sm transition-all hover:scale-[1.03]"
-          style={{
-            fontFamily: "'Jost', system-ui, sans-serif",
-            background: "linear-gradient(145deg, #c8927a, #d4a882)",
-            boxShadow: "0 8px 28px rgba(200,146,122,0.32)",
-          }}
-        >
-          <Send size={14} /> Submit a Prayer Request
-        </button>
-          <a
-          href="#wall"
-          className="flex items-center gap-2 px-7 py-4 rounded-full font-medium text-sm transition"
-          style={{
-            fontFamily: "'Jost', system-ui, sans-serif",
-            border: "1px solid rgba(200,146,122,0.35)",
-            color: "rgba(90,58,40,0.6)",
-          }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = "#c8927a"; e.currentTarget.style.color = "#3d2214"; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(200,146,122,0.35)"; e.currentTarget.style.color = "rgba(90,58,40,0.6)"; }}
-        >
-          <Shield size={14} /> Join in Prayer
-        </a>
-      </div>
-    </motion.div>
+            <div className="flex flex-col sm:flex-row items-start gap-3">
+              <button
+                onClick={() => setShowForm(true)}
+                className="flex items-center gap-2 px-7 py-4 rounded-full text-white font-medium text-sm transition-all hover:scale-[1.03]"
+                style={{
+                  fontFamily: "'Jost', system-ui, sans-serif",
+                  background: "linear-gradient(145deg, #c8927a, #d4a882)",
+                  boxShadow: "0 8px 28px rgba(200,146,122,0.32)",
+                }}
+              >
+                <Send size={14} /> Submit a Prayer Request
+              </button>
+              {/* secondary button — was rgba(90,58,40,0.6) → now 0.80 */}
+              <a
+                href="#wall"
+                className="flex items-center gap-2 px-7 py-4 rounded-full font-medium text-sm transition"
+                style={{
+                  fontFamily: "'Jost', system-ui, sans-serif",
+                  border: "1px solid rgba(200,146,122,0.40)",
+                  color: "rgba(90,58,40,0.80)",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "#c8927a"; e.currentTarget.style.color = "#3d2214"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(200,146,122,0.40)"; e.currentTarget.style.color = "rgba(90,58,40,0.80)"; }}
+              >
+                <Shield size={14} /> Join in Prayer
+              </a>
+            </div>
+          </motion.div>
 
-    {/* verse footer */}
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.7 }}
-      className="mt-16 pt-8"
-      style={{ borderTop: "1px solid rgba(200,146,122,0.18)" }}
-    >
-      <p className="text-sm italic" style={{ color: "rgba(90,58,40,0.55)", fontFamily: "'EB Garamond', Georgia, serif" }}>
-        "The effectual fervent prayer of a righteous man availeth much."
-      </p>
-      <p className="text-[10px] font-medium uppercase tracking-[0.25em] mt-2"
-        style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#b8845a" }}>
-        — James 5:16
-      </p>
-    </motion.div>
-  </div>
-</section>
+          {/* verse footer — was rgba(90,58,40,0.55) → now 0.78 */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="mt-16 pt-8"
+            style={{ borderTop: "1px solid rgba(200,146,122,0.18)" }}
+          >
+            <p className="text-sm italic" style={{ color: "rgba(90,58,40,0.78)", fontFamily: "'EB Garamond', Georgia, serif" }}>
+              "The effectual fervent prayer of a righteous man availeth much."
+            </p>
+            {/* was #b8845a → now #9a6a3a */}
+            <p className="text-[10px] font-medium uppercase tracking-[0.25em] mt-2"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#9a6a3a" }}>
+              — James 5:16
+            </p>
+          </motion.div>
+        </div>
+      </section>
 
-      {/* ── Wall section — parchment, matches Discipleship tracks section ── */}
+      {/* ── Wall section ── */}
       <section id="wall" className="parchment-bg py-16">
         <div className="max-w-6xl mx-auto px-6">
 
-          {/* Section header */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -354,17 +353,18 @@ const PrayerWall = () => {
           >
             <div className="flex items-center gap-4 mb-4">
               <Ornament className="text-[#c8927a]/50 w-24" />
+              {/* was #b8845a → now #9a6a3a */}
               <span className="text-[10px] font-medium uppercase tracking-[0.28em] whitespace-nowrap"
-                style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#b8845a" }}>
+                style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#9a6a3a" }}>
                 Interceding Together
               </span>
             </div>
           </motion.div>
 
-          {/* Filter bar */}
+          {/* Filter bar — was rgba(90,58,40,0.4) label → now 0.65; inactive pill text 0.65 → 0.80 */}
           <div className="flex items-center gap-2.5 mb-10 overflow-x-auto pb-2">
             <span className="text-[10px] font-medium uppercase tracking-widest shrink-0"
-              style={{ color: "rgba(90,58,40,0.4)", fontFamily: "'Jost', system-ui, sans-serif" }}>
+              style={{ color: "rgba(90,58,40,0.65)", fontFamily: "'Jost', system-ui, sans-serif" }}>
               Filter:
             </span>
             {allFilters.map(f => {
@@ -375,9 +375,9 @@ const PrayerWall = () => {
                   className="shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-[10px] font-medium uppercase tracking-widest transition-all"
                   style={{
                     fontFamily: "'Jost', system-ui, sans-serif",
-                    background: active ? "linear-gradient(145deg, #5a3020, #8b5a3a)" : "rgba(255,252,248,0.88)",
-                    color: active ? "#fff" : "rgba(90,58,40,0.65)",
-                    border: active ? "1px solid #5a3020" : "1px solid rgba(200,146,122,0.22)",
+                    background: active ? "linear-gradient(145deg, #5a3020, #8b5a3a)" : "rgba(255,252,248,0.92)",
+                    color: active ? "#fff" : "rgba(90,58,40,0.80)",
+                    border: active ? "1px solid #5a3020" : "1px solid rgba(200,146,122,0.28)",
                     boxShadow: active ? "0 4px 14px rgba(90,48,32,0.18)" : "none",
                   }}
                 >
@@ -421,12 +421,12 @@ const PrayerWall = () => {
               style={{
                 background: "#fdf6f0",
                 borderRadius: "1.5rem",
-                border: "1px solid rgba(200,146,122,0.22)",
+                border: "1px solid rgba(200,146,122,0.25)",
                 boxShadow: "0 24px 80px rgba(60,16,4,0.28)",
               }}
               onClick={e => e.stopPropagation()}
             >
-              {/* modal header — mahogany, matches Discipleship dark sections */}
+              {/* modal header */}
               <div className="relative overflow-hidden p-7"
                 style={{ background: "linear-gradient(160deg, #3d2214 0%, #5a3020 100%)" }}>
                 <div className="absolute inset-0 opacity-[0.07]"
@@ -437,8 +437,9 @@ const PrayerWall = () => {
                   <div>
                     <div className="flex items-center gap-3 mb-2">
                       <Ornament className="text-[#c8927a]/50 w-16" />
+                      {/* was #e0b090 → now #f0c8a0 */}
                       <p className="text-[9px] font-medium uppercase tracking-[0.3em]"
-                        style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#e0b090" }}>
+                        style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#f0c8a0" }}>
                         The Prayer Wall
                       </p>
                     </div>
@@ -446,16 +447,18 @@ const PrayerWall = () => {
                       style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
                       Share Your Prayer Request
                     </h3>
+                    {/* was rgba(255,255,255,0.42) → now 0.68 */}
                     <p className="text-xs mt-1"
-                      style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(255,255,255,0.42)" }}>
+                      style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(255,255,255,0.68)" }}>
                       The community will stand with you in prayer.
                     </p>
                   </div>
+                  {/* was rgba(255,255,255,0.45) → now 0.70 */}
                   <button onClick={() => setShowForm(false)}
                     className="transition mt-1"
-                    style={{ color: "rgba(255,255,255,0.45)" }}
+                    style={{ color: "rgba(255,255,255,0.70)" }}
                     onMouseEnter={e => e.currentTarget.style.color = "#fff"}
-                    onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.45)"}
+                    onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.70)"}
                   >
                     <X size={20} />
                   </button>
@@ -470,13 +473,14 @@ const PrayerWall = () => {
                     className="flex flex-col items-center py-10 text-center"
                   >
                     <div className="w-16 h-16 rounded-full flex items-center justify-center mb-5"
-                      style={{ background: "rgba(140,180,140,0.12)", border: "2px solid rgba(140,180,140,0.3)" }}>
-                      <Check size={28} style={{ color: "#6a9868" }} />
+                      style={{ background: "rgba(140,180,140,0.14)", border: "2px solid rgba(140,180,140,0.35)" }}>
+                      <Check size={28} style={{ color: "#5a8848" }} />
                     </div>
                     <h4 className="text-xl font-semibold mb-2" style={{ color: "#3d2214", fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
                       Prayer Request Submitted
                     </h4>
-                    <p className="text-sm" style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(90,58,40,0.6)" }}>
+                    {/* was rgba(90,58,40,0.6) → now 0.80 */}
+                    <p className="text-sm" style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(90,58,40,0.80)" }}>
                       Your request has been added to the wall. The community is already praying.
                     </p>
                   </motion.div>
@@ -484,19 +488,20 @@ const PrayerWall = () => {
                   <>
                     {/* anonymous toggle */}
                     <div className="flex items-center justify-between p-4 rounded-2xl"
-                      style={{ background: "rgba(200,146,122,0.08)", border: "1px solid rgba(200,146,122,0.18)" }}>
+                      style={{ background: "rgba(200,146,122,0.08)", border: "1px solid rgba(200,146,122,0.20)" }}>
                       <div>
                         <p className="text-sm font-semibold" style={{ color: "#3d2214", fontFamily: "'Jost', system-ui, sans-serif" }}>
                           Post Anonymously
                         </p>
-                        <p className="text-xs" style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(90,58,40,0.5)" }}>
+                        {/* was rgba(90,58,40,0.5) → now 0.72 */}
+                        <p className="text-xs" style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(90,58,40,0.72)" }}>
                           Your name will not be shown
                         </p>
                       </div>
                       <button
                         onClick={() => setForm(f => ({ ...f, anonymous: !f.anonymous }))}
                         className="w-12 h-6 rounded-full transition-all relative"
-                        style={{ background: form.anonymous ? "#c8927a" : "rgba(90,58,40,0.18)" }}
+                        style={{ background: form.anonymous ? "#c8927a" : "rgba(90,58,40,0.22)" }}
                       >
                         <div className="w-5 h-5 bg-white rounded-full absolute top-0.5 transition-all shadow-sm"
                           style={{ left: form.anonymous ? "1.5rem" : "0.125rem" }} />
@@ -505,7 +510,7 @@ const PrayerWall = () => {
 
                     {!form.anonymous && (
                       <div className="grid grid-cols-2 gap-3">
-                        {["name", "location"].map((field, i) => (
+                        {["name", "location"].map((field) => (
                           <input
                             key={field}
                             placeholder={field === "name" ? "Your name" : "Location (optional)"}
@@ -514,9 +519,9 @@ const PrayerWall = () => {
                             className="px-4 py-3 text-sm rounded-xl outline-none transition"
                             style={{
                               fontFamily: "'Jost', system-ui, sans-serif",
-                              fontWeight: 300,
+                              fontWeight: 400,
                               background: "rgba(255,252,248,0.95)",
-                              border: "1px solid rgba(200,146,122,0.22)",
+                              border: "1px solid rgba(200,146,122,0.25)",
                               color: "#3d2214",
                             }}
                           />
@@ -532,16 +537,17 @@ const PrayerWall = () => {
                         className="w-full px-4 py-3 text-sm rounded-xl outline-none appearance-none transition"
                         style={{
                           fontFamily: "'Jost', system-ui, sans-serif",
-                          fontWeight: 300,
+                          fontWeight: 400,
                           background: "rgba(255,252,248,0.95)",
-                          border: "1px solid rgba(200,146,122,0.22)",
+                          border: "1px solid rgba(200,146,122,0.25)",
                           color: "#3d2214",
                         }}
                       >
                         {CATEGORIES.map(c => <option key={c}>{c}</option>)}
                       </select>
+                      {/* was rgba(90,58,40,0.4) → now 0.62 */}
                       <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
-                        style={{ color: "rgba(90,58,40,0.4)" }} />
+                        style={{ color: "rgba(90,58,40,0.62)" }} />
                     </div>
 
                     {/* prayer text */}
@@ -554,7 +560,7 @@ const PrayerWall = () => {
                       style={{
                         fontFamily: "'EB Garamond', Georgia, serif",
                         background: "rgba(255,252,248,0.95)",
-                        border: "1px solid rgba(200,146,122,0.22)",
+                        border: "1px solid rgba(200,146,122,0.25)",
                         color: "#3d2214",
                         lineHeight: "1.85",
                       }}
@@ -568,7 +574,7 @@ const PrayerWall = () => {
                         fontFamily: "'Jost', system-ui, sans-serif",
                         background: form.text.trim()
                           ? "linear-gradient(145deg, #5a3020, #8b5a3a)"
-                          : "rgba(90,48,32,0.25)",
+                          : "rgba(90,48,32,0.28)",
                         boxShadow: form.text.trim() ? "0 8px 24px rgba(90,48,32,0.22)" : "none",
                         cursor: form.text.trim() ? "pointer" : "not-allowed",
                       }}

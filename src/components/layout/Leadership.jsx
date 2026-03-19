@@ -136,7 +136,6 @@ const TeamModal = ({ member, onClose }) => (
       }}
       onClick={(e) => e.stopPropagation()}
     >
-      {/* gradient top */}
       <div className="h-0.5" style={{ background: "linear-gradient(90deg, transparent, #c8927a, #e8c4a0, #c8927a, transparent)" }} />
 
       <div className="p-8">
@@ -157,27 +156,31 @@ const TeamModal = ({ member, onClose }) => (
               </p>
             </div>
           </div>
+          {/* was rgba(90,58,40,0.4) → now 0.65 */}
           <button onClick={onClose}
             className="transition p-1 rounded-full"
-            style={{ color: "rgba(90,58,40,0.4)" }}
+            style={{ color: "rgba(90,58,40,0.65)" }}
             onMouseEnter={e => e.currentTarget.style.color = "#3d2214"}
-            onMouseLeave={e => e.currentTarget.style.color = "rgba(90,58,40,0.4)"}>
+            onMouseLeave={e => e.currentTarget.style.color = "rgba(90,58,40,0.65)"}>
             <X size={18} />
           </button>
         </div>
 
+        {/* was rgba(90,58,40,0.75), weight 300 → now 0.88, weight 400 */}
         <p className="text-sm leading-relaxed mb-6"
-          style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(90,58,40,0.75)" }}>
+          style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(90,58,40,0.88)" }}>
           {member.bio}
         </p>
 
         <div className="rounded-2xl p-5" style={{ background: "linear-gradient(145deg, #3d2214, #5a3020)" }}>
+          {/* was rgba(232,196,160,0.85) → now rgba(232,196,160,0.95) */}
           <p className="italic text-sm leading-relaxed mb-2"
-            style={{ color: "rgba(232,196,160,0.85)", fontFamily: "'EB Garamond', Georgia, serif" }}>
+            style={{ color: "rgba(232,196,160,0.95)", fontFamily: "'EB Garamond', Georgia, serif" }}>
             "{member.verse}"
           </p>
+          {/* was rgba(200,146,122,0.55) → now rgba(200,146,122,0.85) */}
           <p className="text-[10px] font-medium uppercase tracking-widest"
-            style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(200,146,122,0.55)" }}>
+            style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(200,146,122,0.85)" }}>
             — {member.verseRef}
           </p>
         </div>
@@ -227,7 +230,6 @@ const Leadership = () => {
         <div className="absolute top-0 left-0 right-0 h-0.5"
           style={{ background: "linear-gradient(90deg, transparent, #c8927a, #e8c4a0, #c8927a, transparent)" }} />
 
-        {/* watermark */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
           <span className="text-[18vw] font-bold leading-none"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", color: "rgba(200,146,122,0.06)", whiteSpace: "nowrap" }}>
@@ -238,7 +240,6 @@ const Leadership = () => {
         <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full"
           style={{ background: "radial-gradient(circle, rgba(200,146,122,0.12) 0%, transparent 70%)" }} />
 
-        {/* root SVG */}
         <svg className="absolute bottom-0 left-0 right-0 w-full opacity-[0.08]" viewBox="0 0 1400 160" fill="none" preserveAspectRatio="none">
           <path d="M0 160 L200 130 L400 100 L600 70 L700 0 L800 70 L1000 100 L1200 130 L1400 160" stroke="#c8927a" strokeWidth="1.5" fill="none"/>
           <path d="M0 160 L150 140 L350 115 L550 85 L700 0 L850 85 L1050 115 L1250 140 L1400 160" stroke="#e8c4a0" strokeWidth="0.8" fill="none"/>
@@ -246,11 +247,12 @@ const Leadership = () => {
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 pt-36 w-full">
           <motion.div initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
+            {/* was rgba(184,132,90,0.6) → now 0.85 */}
             <Link to="/about"
               className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] mb-8 transition"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(184,132,90,0.6)" }}
-              onMouseEnter={e => e.currentTarget.style.color = "#b8845a"}
-              onMouseLeave={e => e.currentTarget.style.color = "rgba(184,132,90,0.6)"}>
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(184,132,90,0.85)" }}
+              onMouseEnter={e => e.currentTarget.style.color = "#7a4a22"}
+              onMouseLeave={e => e.currentTarget.style.color = "rgba(184,132,90,0.85)"}>
               <ArrowLeft size={12} /> About
             </Link>
           </motion.div>
@@ -258,7 +260,8 @@ const Leadership = () => {
           <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, delay: 0.1 }}>
             <div className="flex items-center gap-4 mb-7">
               <Ornament className="text-[#c8927a]/50 w-28" />
-              <span className="text-[#b8845a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
+              {/* was #b8845a → now #9a6a3a */}
+              <span className="text-[#9a6a3a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
                 style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                 The Team
               </span>
@@ -268,8 +271,9 @@ const Leadership = () => {
               <span className="block text-[clamp(3rem,7vw,5.5rem)]">Our</span>
               <span className="block text-[clamp(3rem,7vw,5.5rem)]" style={{ color: "#c8927a" }}>Leadership</span>
             </h1>
-            <p className="text-[#5a3a28]/60 text-base mt-5 max-w-lg leading-relaxed"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300 }}>
+            {/* was /60, weight 300 → now /85, weight 400 */}
+            <p className="text-[#5a3a28]/85 text-base mt-5 max-w-lg leading-relaxed"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400 }}>
               Servant leaders rooted in humility, fuelled by faith, and called to raise a generation that moves the world.
             </p>
           </motion.div>
@@ -283,7 +287,8 @@ const Leadership = () => {
             <motion.div {...fadeUp(0)} className="mb-12">
               <div className="flex items-center gap-4 mb-4">
                 <Ornament className="text-[#c8927a]/50 w-28" />
-                <span className="text-[#b8845a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
+                {/* was #b8845a → now #9a6a3a */}
+                <span className="text-[#9a6a3a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
                   style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                   Founder
                 </span>
@@ -313,14 +318,15 @@ const Leadership = () => {
                     {leader.initials}
                   </span>
                 </div>
-                <p className="text-white/50 text-[9px] font-medium uppercase tracking-[0.22em]"
+                {/* was white/50 → now white/80 */}
+                <p className="text-white/80 text-[9px] font-medium uppercase tracking-[0.22em]"
                   style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                   Tap to read more
                 </p>
               </div>
 
               {/* right — content */}
-              <div className="md:col-span-2 p-10" style={{ background: "rgba(255,255,255,0.85)" }}>
+              <div className="md:col-span-2 p-10" style={{ background: "rgba(255,255,255,0.90)" }}>
                 <p className="text-[10px] font-medium uppercase tracking-[0.25em] mb-3"
                   style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#c8927a" }}>
                   {leader.role}
@@ -329,13 +335,15 @@ const Leadership = () => {
                   style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600 }}>
                   {leader.name}
                 </h2>
+                {/* was rgba(90,58,40,0.75) → now 0.88 */}
                 <p className="text-base leading-[1.82] mb-7"
-                  style={{ fontFamily: "'EB Garamond', Georgia, serif", color: "rgba(90,58,40,0.75)" }}>
+                  style={{ fontFamily: "'EB Garamond', Georgia, serif", color: "rgba(90,58,40,0.88)" }}>
                   {leader.bio}
                 </p>
 
+                {/* was #7a4a32 → now #5a3018 */}
                 <div className="pl-5 mb-7" style={{ borderLeft: "2px solid rgba(200,146,122,0.5)" }}>
-                  <p className="italic text-base" style={{ color: "#7a4a32", fontFamily: "'EB Garamond', Georgia, serif" }}>
+                  <p className="italic text-base" style={{ color: "#5a3018", fontFamily: "'EB Garamond', Georgia, serif" }}>
                     "{leader.verse}"
                   </p>
                   <p className="text-[10px] font-medium uppercase tracking-widest mt-2"
@@ -359,9 +367,9 @@ const Leadership = () => {
                     return Icon ? (
                       <a key={platform} href={href}
                         className="w-8 h-8 rounded-full flex items-center justify-center transition"
-                        style={{ border: "1px solid rgba(200,146,122,0.3)", color: "rgba(200,146,122,0.6)" }}
+                        style={{ border: "1px solid rgba(200,146,122,0.35)", color: "rgba(200,146,122,0.75)" }}
                         onMouseEnter={e => { e.currentTarget.style.color = "#c8927a"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.7)"; }}
-                        onMouseLeave={e => { e.currentTarget.style.color = "rgba(200,146,122,0.6)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.3)"; }}
+                        onMouseLeave={e => { e.currentTarget.style.color = "rgba(200,146,122,0.75)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.35)"; }}
                         onClick={(e) => e.stopPropagation()}>
                         <Icon size={13} />
                       </a>
@@ -382,7 +390,8 @@ const Leadership = () => {
           <motion.div {...fadeUp(0)} className="mb-14">
             <div className="flex items-center gap-4 mb-5">
               <Ornament className="text-[#c8927a]/50 w-28" />
-              <span className="text-[#b8845a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
+              {/* was #b8845a → now #9a6a3a */}
+              <span className="text-[#9a6a3a] text-[10px] font-medium uppercase tracking-[0.3em] whitespace-nowrap"
                 style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
                 Core Team
               </span>
@@ -392,8 +401,9 @@ const Leadership = () => {
               Serving Together<br />
               <em className="not-italic" style={{ color: "#c8927a" }}>in the Mission</em>
             </h2>
+            {/* was rgba(90,58,40,0.65), weight 300 → now 0.82, weight 400 */}
             <p className="mt-4 max-w-lg text-base"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(90,58,40,0.65)" }}>
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(90,58,40,0.82)" }}>
               Each member of our core team brings a distinct gift and calling — together forming one body, unified in purpose.
             </p>
           </motion.div>
@@ -405,7 +415,7 @@ const Leadership = () => {
                 {...fadeUp(i * 0.08)}
                 className="group rounded-3xl overflow-hidden cursor-pointer transition-all"
                 style={{
-                  background: "rgba(255,255,255,0.8)",
+                  background: "rgba(255,255,255,0.88)",
                   border: "1px solid rgba(200,146,122,0.18)",
                   boxShadow: "0 2px 16px rgba(180,120,90,0.06)",
                 }}
@@ -413,7 +423,6 @@ const Leadership = () => {
                 onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(200,146,122,0.18)"; e.currentTarget.style.boxShadow = "0 2px 16px rgba(180,120,90,0.06)"; }}
                 onClick={() => setSelectedMember(member)}
               >
-                {/* top accent line */}
                 <div className="h-0.5" style={{ background: "linear-gradient(90deg, transparent, #c8927a, #e8c4a0, transparent)" }} />
 
                 <div className="p-7">
@@ -434,15 +443,17 @@ const Leadership = () => {
                     </div>
                   </div>
 
+                  {/* was rgba(90,58,40,0.65), weight 300 → now 0.82, weight 400 */}
                   <p className="text-xs leading-relaxed mb-5 line-clamp-3"
-                    style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(90,58,40,0.65)" }}>
+                    style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(90,58,40,0.82)" }}>
                     {member.bio}
                   </p>
 
                   <div className="flex items-center justify-between pt-4"
                     style={{ borderTop: "1px solid rgba(200,146,122,0.15)" }}>
+                    {/* was rgba(122,74,50,0.7) → now rgba(90,48,24,0.85) */}
                     <p className="italic text-xs line-clamp-1 flex-1 mr-3"
-                      style={{ color: "rgba(122,74,50,0.7)", fontFamily: "'EB Garamond', Georgia, serif" }}>
+                      style={{ color: "rgba(90,48,24,0.85)", fontFamily: "'EB Garamond', Georgia, serif" }}>
                       "{member.verse}"
                     </p>
                     <div className="w-7 h-7 rounded-full flex items-center justify-center transition-all shrink-0"
@@ -473,7 +484,8 @@ const Leadership = () => {
         <div className="max-w-6xl mx-auto px-6 relative z-10">
           <motion.div {...fadeUp(0)} className="mb-14">
             <Ornament className="text-[#c8927a]/40 w-36 mb-5" />
-            <span className="text-[#e0b090] text-[10px] font-medium uppercase tracking-[0.3em]"
+            {/* was #e0b090 → now #f0c8a0 */}
+            <span className="text-[#f0c8a0] text-[10px] font-medium uppercase tracking-[0.3em]"
               style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
               Counsel & Wisdom
             </span>
@@ -481,8 +493,9 @@ const Leadership = () => {
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 600 }}>
               Advisory Board
             </h2>
-            <p className="text-white/42 mt-4 max-w-lg text-base"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300 }}>
+            {/* was white/42, weight 300 → now white/70, weight 400 */}
+            <p className="text-white/70 mt-4 max-w-lg text-base"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400 }}>
               A council of seasoned leaders and scholars who provide wisdom, accountability, and theological grounding.
             </p>
           </motion.div>
@@ -494,11 +507,11 @@ const Leadership = () => {
                 {...fadeUp(i * 0.08)}
                 className="rounded-2xl p-6 transition-all"
                 style={{
-                  background: "rgba(253,246,240,0.05)",
-                  border: "1px solid rgba(200,146,122,0.15)",
+                  background: "rgba(253,246,240,0.07)",
+                  border: "1px solid rgba(200,146,122,0.18)",
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = "rgba(253,246,240,0.08)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.38)"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "rgba(253,246,240,0.05)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.15)"; }}
+                onMouseEnter={e => { e.currentTarget.style.background = "rgba(253,246,240,0.10)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.38)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "rgba(253,246,240,0.07)"; e.currentTarget.style.borderColor = "rgba(200,146,122,0.18)"; }}
               >
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg mb-4"
                   style={{ background: adv.gradient, fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
@@ -508,8 +521,9 @@ const Leadership = () => {
                   style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
                   {adv.name}
                 </h3>
+                {/* was rgba(232,196,160,0.5) → now rgba(232,196,160,0.85) */}
                 <p className="text-[11px] mt-1.5 font-medium"
-                  style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(232,196,160,0.5)" }}>
+                  style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(232,196,160,0.85)" }}>
                   {adv.role}
                 </p>
               </motion.div>
@@ -528,8 +542,9 @@ const Leadership = () => {
               Called to Serve?<br />
               <em className="not-italic" style={{ color: "#c8927a" }}>We'd Love to Hear From You.</em>
             </h2>
+            {/* was rgba(90,58,40,0.65), weight 300 → now 0.82, weight 400 */}
             <p className="text-base max-w-xl mx-auto mb-10 leading-relaxed"
-              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(90,58,40,0.65)" }}>
+              style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 400, color: "rgba(90,58,40,0.82)" }}>
               Bold and Rooted is always looking for servant leaders, creatives, intercessors, and missionaries who are ready to pour out their gifts for the Kingdom.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -542,15 +557,16 @@ const Leadership = () => {
                 }}>
                 Volunteer With Us <ArrowRight size={15} />
               </Link>
+              {/* was #7a4a32 → now #5a3018 */}
               <Link to="/contact"
                 className="flex items-center gap-2 px-8 py-4 rounded-full text-sm font-medium transition"
                 style={{
                   fontFamily: "'Jost', system-ui, sans-serif",
-                  color: "#7a4a32",
-                  border: "1px solid rgba(200,146,122,0.35)",
+                  color: "#5a3018",
+                  border: "1px solid rgba(200,146,122,0.4)",
                 }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(200,146,122,0.7)"; e.currentTarget.style.background = "rgba(200,146,122,0.06)"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(200,146,122,0.35)"; e.currentTarget.style.background = "transparent"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(200,146,122,0.4)"; e.currentTarget.style.background = "transparent"; }}
               >
                 Get in Touch <ArrowRight size={15} />
               </Link>
