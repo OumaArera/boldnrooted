@@ -1,30 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Send, Flame, Shield, Clock, Check, ChevronDown, HandHeart, Users, X } from "lucide-react";
 
-const CATEGORIES = ["Healing", "Provision", "Family", "Direction", "Salvation", "Breakthrough", "Praise", "Protection"];
 
-const PRAYER_REQUESTS = [
-  { id: 1, name: "Ama K.", location: "Accra, Ghana", category: "Healing", time: "2 hours ago", text: "Please pray for my mother's complete recovery from her surgery. The doctors say she needs a miracle. I believe God is able.", prayed: 47, anonymous: false, answered: false },
-  { id: 2, name: "Anonymous", location: "Atlanta, USA", category: "Direction", time: "5 hours ago", text: "I am at a crossroads in my life — between two cities, two careers. I need God to speak clearly. Please stand with me.", prayed: 31, anonymous: true, answered: false },
-  { id: 3, name: "Emmanuel A.", location: "Lagos, Nigeria", category: "Salvation", time: "8 hours ago", text: "My brother has been away from the faith for 4 years. I am believing for a prodigal son moment. Please intercede.", prayed: 89, anonymous: false, answered: false },
-  { id: 4, name: "Miriam O.", location: "Nairobi, Kenya", category: "Praise", time: "Yesterday", text: "ANSWERED PRAYER! God came through on my visa application after months of waiting. He is faithful! Sharing for His glory.", prayed: 124, anonymous: false, answered: true },
-  { id: 5, name: "Anonymous", location: "London, UK", category: "Breakthrough", time: "Yesterday", text: "Facing a financial mountain — bills, loans, and no job for 7 months. I'm trusting God but I need the body of Christ to stand with me.", prayed: 56, anonymous: true, answered: false },
-  { id: 6, name: "Joshua M.", location: "Kumasi, Ghana", category: "Family", time: "2 days ago", text: "Our family is going through a painful season of conflict. Pray for restoration, forgiveness, and the peace of God to reign.", prayed: 73, anonymous: false, answered: false },
-  { id: 7, name: "Grace W.", location: "Accra, Ghana", category: "Protection", time: "3 days ago", text: "Traveling for mission work in a difficult region. Please cover our team in prayer — safety, favour, and open doors.", prayed: 112, anonymous: false, answered: false },
-  { id: 8, name: "Daniel P.", location: "Toronto, Canada", category: "Provision", time: "3 days ago", text: "Grad school fees are due and I have nothing. I believe in Jehovah Jireh. Please agree with me in faith.", prayed: 44, anonymous: false, answered: false },
+const API_BASE = "https://goalkeepers-backend-2.onrender.com/bold-n-rooted/api/v1";
+
+/* Deterministic color palette cycled by category index */
+const COLOR_PALETTE = [
+  { bg: "rgba(200,146,122,0.10)", text: "#c8927a",  dot: "#c8927a"  },
+  { bg: "rgba(196,168,130,0.12)", text: "#b09070",  dot: "#c4a882"  },
+  { bg: "rgba(212,168,140,0.12)", text: "#c4885a",  dot: "#d4a882"  },
+  { bg: "rgba(168,154,180,0.12)", text: "#8878a0",  dot: "#a89ab4"  },
+  { bg: "rgba(140,106,168,0.10)", text: "#7a5a90",  dot: "#a07ab4"  },
+  { bg: "rgba(200,146,122,0.08)", text: "#b07848",  dot: "#c8927a"  },
+  { bg: "rgba(140,180,140,0.12)", text: "#6a9868",  dot: "#8ab888"  },
+  { bg: "rgba(90,58,40,0.08)",    text: "#7a5a40",  dot: "#9a7a60"  },
 ];
 
-const CATEGORY_COLORS = {
-  Healing:     { bg: "rgba(200,146,122,0.10)", text: "#c8927a",  dot: "#c8927a" },
-  Provision:   { bg: "rgba(196,168,130,0.12)", text: "#b09070",  dot: "#c4a882" },
-  Family:      { bg: "rgba(212,168,140,0.12)", text: "#c4885a",  dot: "#d4a882" },
-  Direction:   { bg: "rgba(168,154,180,0.12)", text: "#8878a0",  dot: "#a89ab4" },
-  Salvation:   { bg: "rgba(140,106,168,0.10)", text: "#7a5a90",  dot: "#a07ab4" },
-  Breakthrough:{ bg: "rgba(200,146,122,0.08)", text: "#b07848",  dot: "#c8927a" },
-  Praise:      { bg: "rgba(140,180,140,0.12)", text: "#6a9868",  dot: "#8ab888" },
-  Protection:  { bg: "rgba(90,58,40,0.08)",    text: "#7a5a40",  dot: "#9a7a60" },
+/* Build CATEGORY_COLORS map dynamically from fetched categories */
+const buildColorMap = (categories) =>
+  Object.fromEntries(
+    categories.map((cat, i) => [cat.name, COLOR_PALETTE[i % COLOR_PALETTE.length]])
+  );
+
+/* Relative time from ISO string */
+const relativeTime = (isoString) => {
+  const diff = Math.floor((Date.now() - new Date(isoString)) / 1000);
+  if (diff < 60)         return "Just now";
+  if (diff < 3600)       return `${Math.floor(diff / 60)} minutes ago`;
+  if (diff < 86400)      return `${Math.floor(diff / 3600)} hours ago`;
+  if (diff < 172800)     return "Yesterday";
+  return `${Math.floor(diff / 86400)} days ago`;
 };
+
+const parsePrayerRequest = (r) => ({
+  id:        r.id,
+  name:      r.anonymous ? "Anonymous" : r.name,
+  location:  r.location || "Global",
+  category:  r.category?.name ?? "General",
+  categoryId: r.category?.id ?? null,
+  time:      relativeTime(r.created_at),
+  text:      r.text,
+  prayed:    r.prayed_count ?? 0,
+  anonymous: r.anonymous,
+  answered:  r.answered,
+});
 
 const Ornament = ({ className = "" }) => (
   <svg viewBox="0 0 80 20" fill="none" className={className}>
@@ -36,9 +56,9 @@ const Ornament = ({ className = "" }) => (
   </svg>
 );
 
-const PrayerCard = ({ req, onPray }) => {
+const PrayerCard = ({ req, onPray, colorMap }) => {
   const [prayed, setPrayed] = useState(false);
-  const col = CATEGORY_COLORS[req.category] || CATEGORY_COLORS.Breakthrough;
+  const col = colorMap?.[req.category] ?? COLOR_PALETTE[5];
 
   const handlePray = () => {
     if (prayed) return;
@@ -173,11 +193,53 @@ const PrayerCard = ({ req, onPray }) => {
 };
 
 const PrayerWall = () => {
-  const [requests, setRequests] = useState(PRAYER_REQUESTS);
-  const [filter, setFilter] = useState("All");
-  const [showForm, setShowForm] = useState(false);
+  const [requests, setRequests]     = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [colorMap, setColorMap]     = useState({});
+  const [loading, setLoading]       = useState(true);
+  const [fetchError, setFetchError] = useState(false);
+
+  const [filter, setFilter]       = useState("All");
+  const [showForm, setShowForm]   = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({ name: "", location: "", category: "Healing", text: "", anonymous: false });
+  const [submitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState({
+    name: "", location: "", category: "", categoryId: "", text: "", anonymous: false,
+  });
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        const [catRes, reqRes] = await Promise.all([
+          fetch(`${API_BASE}/prayer-categories/`),
+          fetch(`${API_BASE}/prayer-requests/`),
+        ]);
+        if (!catRes.ok || !reqRes.ok) throw new Error("Network error");
+        const [catJson, reqJson] = await Promise.all([catRes.json(), reqRes.json()]);
+
+        const fetchedCats = (catJson.data?.results ?? []).filter(c => c.is_active);
+        const fetchedReqs = (reqJson.data?.results ?? [])
+          .filter(r => r.is_active)
+          .map(parsePrayerRequest);
+
+        const map = buildColorMap(fetchedCats);
+        setCategories(fetchedCats);
+        setColorMap(map);
+        setRequests(fetchedReqs);
+
+        // Pre-select first category in form
+        if (fetchedCats.length > 0) {
+          setForm(f => ({ ...f, category: fetchedCats[0].name, categoryId: fetchedCats[0].id }));
+        }
+      } catch (err) {
+        console.error("PrayerWall fetch error:", err);
+        setFetchError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAll();
+  }, []);
 
   const filtered = filter === "All"
     ? requests
@@ -189,29 +251,67 @@ const PrayerWall = () => {
     setRequests(prev => prev.map(r => r.id === id ? { ...r, prayed: r.prayed + 1 } : r));
   };
 
-  const handleSubmit = () => {
-    if (!form.text.trim()) return;
-    const newReq = {
-      id: Date.now(),
-      name: form.anonymous ? "Anonymous" : (form.name || "Anonymous"),
-      location: form.location || "Global",
-      category: form.category,
-      time: "Just now",
-      text: form.text,
-      prayed: 0,
-      anonymous: form.anonymous,
-      answered: false,
-    };
-    setRequests(prev => [newReq, ...prev]);
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setShowForm(false);
-      setForm({ name: "", location: "", category: "Healing", text: "", anonymous: false });
-    }, 2500);
+  const handleSubmit = async () => {
+    if (!form.text.trim() || submitting) return;
+    setSubmitting(true);
+    try {
+      const payload = {
+        name:      form.anonymous ? "" : form.name,
+        location:  form.location || "Global",
+        category:  form.categoryId,
+        text:      form.text,
+        anonymous: form.anonymous,
+      };
+      const res = await fetch(`${API_BASE}/prayer-requests/`, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        const json = await res.json();
+        const newReq = parsePrayerRequest(json.data ?? {
+          id: Date.now(), name: payload.name || "Anonymous",
+          location: payload.location, category: { name: form.category },
+          text: form.text, anonymous: form.anonymous,
+          answered: false, prayed_count: 0, is_active: true,
+          created_at: new Date().toISOString(),
+        });
+        setRequests(prev => [newReq, ...prev]);
+      } else {
+        // Optimistic fallback if API rejects — still show success to user
+        const fallback = {
+          id: Date.now(),
+          name:      form.anonymous ? "Anonymous" : (form.name || "Anonymous"),
+          location:  form.location || "Global",
+          category:  form.category,
+          categoryId: form.categoryId,
+          time:      "Just now",
+          text:      form.text,
+          prayed:    0,
+          anonymous: form.anonymous,
+          answered:  false,
+        };
+        setRequests(prev => [fallback, ...prev]);
+      }
+
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setShowForm(false);
+        const firstCat = categories[0];
+        setForm({ name: "", location: "", category: firstCat?.name ?? "", categoryId: firstCat?.id ?? "", text: "", anonymous: false });
+      }, 2500);
+    } catch {
+      // Network failure — still optimistic
+      setSubmitted(true);
+      setTimeout(() => { setSubmitted(false); setShowForm(false); }, 2500);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  const allFilters = ["All", "Answered", ...CATEGORIES];
+  const allFilters = ["All", "Answered", ...categories.map(c => c.name)];
   const totalPraying = requests.reduce((acc, r) => acc + r.prayed, 0);
 
   return (
@@ -368,7 +468,7 @@ const PrayerWall = () => {
               Filter:
             </span>
             {allFilters.map(f => {
-              const col = CATEGORY_COLORS[f];
+              const col = COLOR_PALETTE[f];
               const active = filter === f;
               return (
                 <button key={f} onClick={() => setFilter(f)}
@@ -391,10 +491,28 @@ const PrayerWall = () => {
           </div>
 
           {/* Prayer grid */}
+          {loading && (
+            <p className="text-center text-[#9a6a3a]/60 text-sm py-16"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+              Loading prayer requests…
+            </p>
+          )}
+          {fetchError && !loading && (
+            <p className="text-center text-[#c8927a]/70 text-sm py-16"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+              Could not load prayer requests at this time.
+            </p>
+          )}
+          {!loading && !fetchError && filtered.length === 0 && (
+            <p className="text-center text-[#9a6a3a]/60 text-sm py-16"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+              No requests found. Be the first to submit one.
+            </p>
+          )}
           <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <AnimatePresence>
               {filtered.map(req => (
-                <PrayerCard key={req.id} req={req} onPray={handlePray} />
+                <PrayerCard key={req.id} req={req} onPray={handlePray} colorMap={colorMap} />
               ))}
             </AnimatePresence>
           </motion.div>
@@ -532,8 +650,11 @@ const PrayerWall = () => {
                     {/* category */}
                     <div className="relative">
                       <select
-                        value={form.category}
-                        onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
+                        value={form.categoryId}
+                        onChange={e => {
+                          const selected = categories.find(c => c.id === e.target.value);
+                          setForm(f => ({ ...f, categoryId: e.target.value, category: selected?.name ?? "" }));
+                        }}
                         className="w-full px-4 py-3 text-sm rounded-xl outline-none appearance-none transition"
                         style={{
                           fontFamily: "'Jost', system-ui, sans-serif",
@@ -543,7 +664,9 @@ const PrayerWall = () => {
                           color: "#3d2214",
                         }}
                       >
-                        {CATEGORIES.map(c => <option key={c}>{c}</option>)}
+                        {categories.map(c => (
+                          <option key={c.id} value={c.id}>{c.name}</option>
+                        ))}
                       </select>
                       {/* was rgba(90,58,40,0.4) → now 0.62 */}
                       <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"

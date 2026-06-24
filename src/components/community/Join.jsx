@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight, Check, ChevronRight, Sparkles, Flame, CheckCircle2,
 } from "lucide-react";
+
+const API_BASE = "https://goalkeepers-backend-2.onrender.com/bold-n-rooted/api/v1";
+const MIN_FILL_TIME_MS = 3500; // submissions faster than this are bots
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
@@ -88,13 +91,58 @@ const Join = () => {
     firstName: "", lastName: "", email: "", phone: "",
     country: "", age: "", how: "", about: "",
   });
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted]   = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [honeypot, setHoneypot]     = useState("");   // must stay empty
+  const formLoadTime                = useRef(Date.now());
+  const [humanVerified, setHumanVerified] = useState(false);
 
   const selected = INVOLVEMENT.find(i => i.id === selectedPath);
 
-  const handleSubmit = () => {
-    if (!form.firstName || !form.email) return;
-    setSubmitted(true);
+  // After MIN_FILL_TIME_MS the submit button becomes fully active
+  useEffect(() => {
+    const t = setTimeout(() => setHumanVerified(true), MIN_FILL_TIME_MS);
+    return () => clearTimeout(t);
+  }, []);
+
+  const handleSubmit = async () => {
+    // Bot guards
+    if (honeypot)                                         return; // honeypot filled
+    if (Date.now() - formLoadTime.current < MIN_FILL_TIME_MS) return; // too fast
+    if (!form.firstName || !form.email)                   return;
+    if (submitting)                                       return;
+
+    setSubmitting(true);
+    setSubmitError("");
+
+    const payload = {
+      first_name:         form.firstName,
+      last_name:          form.lastName,
+      email:              form.email,
+      phone:              form.phone,
+      country:            form.country,
+      age:                form.age ? parseInt(form.age, 10) : null,
+      how_heard_about_us: form.how,
+      about:              form.about,
+    };
+
+    try {
+      const res = await fetch(`${API_BASE}/join-us/`, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err?.message ?? "Submission failed. Please try again.");
+      }
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const focusBorder = e => e.currentTarget.style.borderColor = "rgba(200,146,122,0.55)";
@@ -609,27 +657,50 @@ const Join = () => {
                     </div>
 
                     {/* Submit */}
-                    <motion.button
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleSubmit}
-                      disabled={!form.firstName || !form.email}
-                      className="w-full py-5 rounded-2xl font-medium text-white text-sm flex items-center justify-center gap-2.5 transition-all"
-                      style={{
-                        fontFamily: "'Jost', system-ui, sans-serif",
-                        background: (form.firstName && form.email)
-                          ? "linear-gradient(145deg, #3d2214, #5a3020)"
-                          : "rgba(90,48,32,0.22)",
-                        boxShadow: (form.firstName && form.email)
-                          ? "0 8px 28px rgba(61,34,20,0.22)"
-                          : "none",
-                        cursor: (!form.firstName || !form.email) ? "not-allowed" : "pointer",
-                      }}
-                      onMouseEnter={e => { if (form.firstName && form.email) e.currentTarget.style.transform = "scale(1.02)"; }}
-                      onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
-                    >
-                      <Flame size={16} className="fill-current" />
-                      Join the Movement
-                    </motion.button>
+                    {/* ── Honeypot — hidden from real users, bots fill it ── */}
+                    <div style={{ position: "absolute", left: "-9999px", opacity: 0, pointerEvents: "none" }} aria-hidden="true">
+                      <input
+                        tabIndex={-1}
+                        autoComplete="off"
+                        name="website"
+                        value={honeypot}
+                        onChange={e => setHoneypot(e.target.value)}
+                      />
+                    </div>
+
+                    {/* Error message */}
+                    {submitError && (
+                      <p className="text-xs text-center"
+                        style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "#904040" }}>
+                        {submitError}
+                      </p>
+                    )}
+
+                    {/* Submit */}
+                    {(() => {
+                      const ready = !!(form.firstName && form.email && humanVerified && !submitting);
+                      return (
+                        <motion.button
+                          whileTap={{ scale: 0.98 }}
+                          onClick={handleSubmit}
+                          disabled={!ready}
+                          className="w-full py-5 rounded-2xl font-medium text-white text-sm flex items-center justify-center gap-2.5 transition-all"
+                          style={{
+                            fontFamily: "'Jost', system-ui, sans-serif",
+                            background: ready
+                              ? "linear-gradient(145deg, #3d2214, #5a3020)"
+                              : "rgba(90,48,32,0.22)",
+                            boxShadow: ready ? "0 8px 28px rgba(61,34,20,0.22)" : "none",
+                            cursor: ready ? "pointer" : "not-allowed",
+                          }}
+                          onMouseEnter={e => { if (ready) e.currentTarget.style.transform = "scale(1.02)"; }}
+                          onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+                        >
+                          <Flame size={16} className="fill-current" />
+                          {submitting ? "Submitting…" : !humanVerified ? "Verifying…" : "Join the Movement"}
+                        </motion.button>
+                      );
+                    })()}
 
                     <p className="text-[10px] text-center"
                       style={{ fontFamily: "'Jost', system-ui, sans-serif", fontWeight: 300, color: "rgba(90,58,40,0.38)" }}>

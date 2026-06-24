@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Calendar, MapPin, Clock, Users, Filter, ChevronRight, Globe, X, Share2, Check } from "lucide-react";
@@ -10,125 +10,47 @@ const fadeUp = (delay = 0) => ({
   viewport: { once: true },
 });
 
-const EVENTS = [
-  {
-    id: "bold-faith-2026",
-    title: "Bold Faith Conference 2026",
-    type: "Conference",
-    date: "March 15, 2026",
-    dateShort: { day: "15", month: "MAR", year: "2026" },
-    time: "9:00 AM – 6:00 PM",
-    location: "Online & Yaoundé, Cameroon",
-    format: "Hybrid",
-    capacity: "500+",
-    description: "Our annual flagship conference bringing together young believers from across the globe for two days of powerful worship, teaching, and commissioning. This year's theme: 'Unmovable — Standing Firm in a Shaking World'.",
-    speakers: ["Rev. Gontse T", "Pastor Adaeze Okonkwo", "Dr. Nathan Boadi"],
-    gradient: "linear-gradient(145deg, #c8927a, #b8775a)",
-    accentGradient: "linear-gradient(135deg, #c8927a 0%, #b8775a 100%)",
-    accent: "#c8927a",
-    featured: true,
-    registrationOpen: true,
-    tags: ["Worship", "Teaching", "Networking"],
-  },
-  {
-    id: "womens-retreat-2026",
-    title: "Rooted Women's Retreat",
-    type: "Retreat",
-    date: "April 2–4, 2026",
-    dateShort: { day: "02", month: "APR", year: "2026" },
-    time: "Check-in: Friday 4 PM",
-    location: "Atlanta, GA, USA",
-    format: "In-Person",
-    capacity: "80",
-    description: "Three days of rest, renewal, and encounter for young women. Set in a serene retreat centre, this gathering is designed for deep community, healing worship, and prophetic activation in a safe, sacred space.",
-    speakers: ["Adaeze Okonkwo", "Grace Owusu"],
-    gradient: "linear-gradient(145deg, #c4a0b8, #a88098)",
-    accentGradient: "linear-gradient(135deg, #c4a0b8, #a88098)",
-    accent: "#c4a0b8",
-    featured: false,
-    registrationOpen: true,
-    tags: ["Women", "Healing", "Worship"],
-  },
-  {
-    id: "discipleship-camp-ghana",
-    title: "Youth Discipleship Camp — Ghana",
-    type: "Camp",
-    date: "April 20–25, 2026",
-    dateShort: { day: "20", month: "APR", year: "2026" },
-    time: "5-Day Residential",
-    location: "Accra, Ghana",
-    format: "In-Person",
-    capacity: "150",
-    description: "A week-long residential camp for young Ghanaians aged 16–30. Packed with Scripture teaching, outdoor activities, evangelism training, and a final commissioning night.",
-    speakers: ["Joshua Mensah", "Emmanuel Asante", "Local Church Leaders"],
-    gradient: "linear-gradient(145deg, #c4a882, #b09070)",
-    accentGradient: "linear-gradient(135deg, #c4a882, #b09070)",
-    accent: "#c4a882",
-    featured: false,
-    registrationOpen: true,
-    tags: ["Youth", "Camp", "Evangelism"],
-  },
-  {
-    id: "prayer-night-may",
-    title: "Global Prayer Night",
-    type: "Prayer",
-    date: "May 10, 2026",
-    dateShort: { day: "10", month: "MAY", year: "2026" },
-    time: "10:00 PM – 2:00 AM",
-    location: "Online (Global)",
-    format: "Online",
-    capacity: "Unlimited",
-    description: "An all-night intercessory prayer session streamed globally. Prayer watches covering every continent, prophetic declarations, and corporate fasting broken together at dawn.",
-    speakers: ["Grace Owusu", "The Prayer Room Community"],
-    gradient: "linear-gradient(145deg, #a89ab4, #8878a0)",
-    accentGradient: "linear-gradient(135deg, #a89ab4, #8878a0)",
-    accent: "#a89ab4",
-    featured: false,
-    registrationOpen: true,
-    tags: ["Prayer", "Fasting", "Intercession"],
-  },
-  {
-    id: "mens-covenant-day",
-    title: "Men of Covenant Commissioning Day",
-    type: "Commissioning",
-    date: "May 30, 2026",
-    dateShort: { day: "30", month: "MAY", year: "2026" },
-    time: "10:00 AM – 4:00 PM",
-    location: "Yaoundé, Cameroon",
-    format: "In-Person",
-    capacity: "200",
-    description: "The culmination of the Men of Covenant 6-month programme — a powerful public commissioning ceremony where men make their covenant statements and are sent out as Kingdom leaders.",
-    speakers: ["Rev. Gontse T", "Joshua Mensah"],
-    gradient: "linear-gradient(145deg, #d4b882, #c0a06a)",
-    accentGradient: "linear-gradient(135deg, #d4b882, #c0a06a)",
-    accent: "#d4b882",
-    featured: false,
-    registrationOpen: false,
-    tags: ["Men", "Leadership", "Commissioning"],
-  },
-  {
-    id: "missions-debrief",
-    title: "Global Missions Debrief & Send-Off",
-    type: "Missions",
-    date: "June 14, 2026",
-    dateShort: { day: "14", month: "JUN", year: "2026" },
-    time: "2:00 PM – 7:00 PM",
-    location: "Nairobi, Kenya",
-    format: "Hybrid",
-    capacity: "300",
-    description: "Celebrating returning mission teams and sending off the next cohort. Stories from the field, prophetic prayer over departing missionaries, and a call to the nations.",
-    speakers: ["Miriam Abubakar", "Daniel Appiah"],
-    gradient: "linear-gradient(145deg, #9ab0c8, #7890a8)",
-    accentGradient: "linear-gradient(135deg, #9ab0c8, #7890a8)",
-    accent: "#9ab0c8",
-    featured: false,
-    registrationOpen: true,
-    tags: ["Missions", "Sending", "Global"],
-  },
-];
+const API_BASE = "https://goalkeepers-backend-2.onrender.com/bold-n-rooted/api/v1";
+const TODAY = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
 
-const TYPES = ["All", "Conference", "Retreat", "Camp", "Prayer", "Commissioning", "Missions"];
-const FORMATS = ["All Formats", "Hybrid", "In-Person", "Online"];
+const fmt12 = (timeStr) => {
+  if (!timeStr) return "";
+  const [h, m] = timeStr.split(":").map(Number);
+  const suffix = h >= 12 ? "PM" : "AM";
+  const hour = h % 12 || 12;
+  return `${hour}:${String(m).padStart(2, "0")} ${suffix}`;
+};
+
+const parseEvent = (e) => {
+  const d = new Date(e.event_date);
+  const day   = String(d.getUTCDate()).padStart(2, "0");
+  const month = d.toLocaleString("en-US", { month: "short" }).toUpperCase();
+  const year  = String(d.getUTCFullYear());
+  const dateLabel = d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+  const timeLabel = e.start_time && e.end_time
+    ? `${fmt12(e.start_time)} – ${fmt12(e.end_time)}`
+    : e.start_time ? fmt12(e.start_time) : "";
+
+  return {
+    id:               e.slug || e.id,
+    title:            e.title,
+    type:             e.event_type,
+    date:             dateLabel,
+    dateShort:        { day, month, year },
+    time:             timeLabel,
+    location:         e.location,
+    format:           e.format,
+    capacity:         e.capacity != null ? String(e.capacity) : "—",
+    description:      e.description,
+    speakers:         e.speakers ?? [],
+    gradient:         e.gradient        || "linear-gradient(145deg, #c8927a, #b8775a)",
+    accentGradient:   e.accent_gradient || "linear-gradient(135deg, #c8927a, #b8775a)",
+    accent:           e.accent          || "#c8927a",
+    featured:         e.featured,
+    registrationOpen: e.registration_open,
+    tags:             (e.tags ?? []).map(t => t.name),
+  };
+};
 
 const Ornament = ({ className = "" }) => (
   <svg viewBox="0 0 80 20" fill="none" className={className}>
@@ -322,16 +244,43 @@ const EventModal = ({ event, onClose }) => {
 
 /* ── Main ── */
 const Events = () => {
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
   const [typeFilter, setTypeFilter] = useState("All");
   const [formatFilter, setFormatFilter] = useState("All Formats");
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const filtered = EVENTS.filter(e =>
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/events/`);
+        if (!res.ok) throw new Error("Network response not ok");
+        const json = await res.json();
+        const active = (json.data?.results ?? [])
+          .filter(e => e.is_active && e.event_date >= TODAY)
+          .map(parseEvent);
+        setEvents(active);
+      } catch (err) {
+        console.error("Events fetch error:", err);
+        setFetchError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEvents();
+  }, []);
+
+  // Derive filter options from live data so they stay in sync
+  const TYPES   = ["All", ...new Set(events.map(e => e.type))];
+  const FORMATS = ["All Formats", ...new Set(events.map(e => e.format))];
+
+  const filtered = events.filter(e =>
     (typeFilter === "All" || e.type === typeFilter) &&
     (formatFilter === "All Formats" || e.format === formatFilter)
   );
 
-  const featured = EVENTS.find(e => e.featured);
+  const featured = events.find(e => e.featured);
   const rest = filtered.filter(e => !e.featured);
 
   return (
@@ -521,6 +470,24 @@ const Events = () => {
       {/* ── Events list ── */}
       <section className="py-14 parchment-bg">
         <div className="max-w-6xl mx-auto px-6">
+          {loading && (
+            <p className="text-center text-[#9a6a3a]/60 text-sm py-16"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+              Loading events…
+            </p>
+          )}
+          {fetchError && !loading && (
+            <p className="text-center text-[#c8927a]/70 text-sm py-16"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+              Could not load events at this time.
+            </p>
+          )}
+          {!loading && !fetchError && rest.length === 0 && (
+            <p className="text-center text-[#9a6a3a]/60 text-sm py-16"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+              No upcoming events match your filter.
+            </p>
+          )}
           <div className="space-y-4">
             {rest.map((event, i) => (
               <motion.div

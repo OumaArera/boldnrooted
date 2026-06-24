@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -13,77 +13,31 @@ const fadeUp = (delay = 0) => ({
   viewport: { once: true },
 });
 
-const TRACKS = [
-  {
-    id: "foundations",
-    title: "Foundations of Faith",
-    subtitle: "The Starting Place",
-    level: "Beginner",
-    weeks: 6,
-    gradient: "linear-gradient(145deg, #c4a882, #b09070)",
-    accent: "#c4a882",
-    icon: "🌱",
-    description: "For those new to faith or returning after a long absence. These six weeks lay the bedrock: who God is, who you are in Christ, how to read the Bible, and how to pray.",
-    modules: [
-      { title: "Who Is God?", type: "reading", duration: "45 min", completed: true },
-      { title: "Your Identity in Christ", type: "teaching", duration: "30 min", completed: true },
-      { title: "How to Read the Bible", type: "teaching", duration: "50 min", completed: false },
-      { title: "Learning to Pray", type: "practice", duration: "Daily", completed: false, locked: false },
-      { title: "The Holy Spirit", type: "teaching", duration: "40 min", completed: false, locked: true },
-      { title: "The Church & Community", type: "reading", duration: "35 min", completed: false, locked: true },
-    ],
-    verse: "As newborn babes, desire the sincere milk of the word, that ye may grow thereby.",
-    verseRef: "1 Peter 2:2",
-  },
-  {
-    id: "going-deeper",
-    title: "Going Deeper",
-    subtitle: "Growing in the Word",
-    level: "Intermediate",
-    weeks: 8,
-    gradient: "linear-gradient(145deg, #c8927a, #b8775a)",
-    accent: "#c8927a",
-    icon: "🌿",
-    description: "A systematic journey through key doctrines, spiritual disciplines, and the life of faith — equipping believers to stand firm and grow consistently.",
-    modules: [
-      { title: "The Nature of Scripture", type: "teaching", duration: "60 min", completed: false },
-      { title: "Salvation & Sanctification", type: "reading", duration: "45 min", completed: false },
-      { title: "Spiritual Disciplines", type: "practice", duration: "Daily", completed: false },
-      { title: "Understanding Spiritual Gifts", type: "teaching", duration: "55 min", completed: false, locked: false },
-      { title: "Warfare & Intercession", type: "teaching", duration: "50 min", completed: false, locked: true },
-      { title: "Hearing God's Voice", type: "practice", duration: "Weekly", completed: false, locked: true },
-      { title: "Faith and Trials", type: "reading", duration: "40 min", completed: false, locked: true },
-      { title: "Living Under Covenant", type: "teaching", duration: "45 min", completed: false, locked: true },
-    ],
-    verse: "Let us go on unto perfection; not laying again the foundation.",
-    verseRef: "Hebrews 6:1",
-  },
-  {
-    id: "kingdom-calling",
-    title: "Kingdom Calling",
-    subtitle: "Sent Out & Equipped",
-    level: "Advanced",
-    weeks: 10,
-    gradient: "linear-gradient(145deg, #a89ab4, #8878a0)",
-    accent: "#a89ab4",
-    icon: "🦅",
-    description: "For mature believers ready to move from consuming to contributing — understanding their Kingdom assignment, leading others, and going to the nations.",
-    modules: [
-      { title: "Theological Foundations for Mission", type: "teaching", duration: "70 min", completed: false },
-      { title: "Your Kingdom Assignment", type: "practice", duration: "2 hrs", completed: false },
-      { title: "Servant Leadership", type: "reading", duration: "60 min", completed: false },
-      { title: "Mentoring Others", type: "teaching", duration: "55 min", completed: false, locked: false },
-      { title: "Cross-Cultural Gospel Work", type: "teaching", duration: "65 min", completed: false, locked: true },
-      { title: "Establishing Discipleship Communities", type: "practice", duration: "Ongoing", completed: false, locked: true },
-      { title: "Facing Persecution & Opposition", type: "reading", duration: "45 min", completed: false, locked: true },
-      { title: "The Long Obedience", type: "teaching", duration: "50 min", completed: false, locked: true },
-      { title: "Commissioning Preparation", type: "practice", duration: "1 hr", completed: false, locked: true },
-      { title: "Sent: Your Covenant & Commissioning", type: "special", duration: "Live Event", completed: false, locked: true },
-    ],
-    verse: "And the things that thou hast heard of me… the same commit thou to faithful men, who shall be able to teach others also.",
-    verseRef: "2 Timothy 2:2",
-  },
-];
+const API_BASE = "https://goalkeepers-backend-2.onrender.com/bold-n-rooted/api/v1";
+
+const parseTrack = (t) => ({
+  id:       t.slug || t.id,
+  title:    t.title,
+  subtitle: t.subtitle,
+  level:    t.level,
+  weeks:    t.weeks,
+  gradient: t.gradient || "linear-gradient(145deg, #c8927a, #b8775a)",
+  accent:   t.accent   || "#c8927a",
+  icon:     t.icon     || "📖",
+  description: t.description,
+  verse:    t.verse,
+  verseRef: t.verse_reference,
+  modules: (t.modules ?? [])
+    .filter(m => m.is_active)
+    .sort((a, b) => a.order - b.order)
+    .map(m => ({
+      title:     m.title,
+      type:      m.module_type,
+      duration:  m.duration,
+      completed: m.completed,
+      locked:    m.locked,
+    })),
+});
 
 const ACCOUNTABILITY_FEATURES = [
   { icon: Users, title: "Partner Matching", desc: "Each disciple is matched with an accountability partner at a similar stage of their journey." },
@@ -333,6 +287,30 @@ const TrackCard = ({ track, index }) => {
 
 /* ── Main ── */
 const Discipleship = () => {
+  const [tracks, setTracks]     = useState([]);
+  const [loading, setLoading]   = useState(true);
+  const [fetchError, setFetchError] = useState(false);
+
+  useEffect(() => {
+    const fetchTracks = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/discipleship/`);
+        if (!res.ok) throw new Error("Network error");
+        const json = await res.json();
+        const active = (json.data?.results ?? [])
+          .filter(t => t.is_active)
+          .map(parseTrack);
+        setTracks(active);
+      } catch (err) {
+        console.error("Discipleship fetch error:", err);
+        setFetchError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTracks();
+  }, []);
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#fdf6f0" }}>
 
@@ -520,7 +498,25 @@ const Discipleship = () => {
           </motion.div>
 
           <div className="space-y-5">
-            {TRACKS.map((track, i) => (
+            {loading && (
+              <p className="text-center text-[#9a6a3a]/60 text-sm py-16"
+                style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+                Loading discipleship tracks…
+              </p>
+            )}
+            {fetchError && !loading && (
+              <p className="text-center text-[#c8927a]/70 text-sm py-16"
+                style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+                Could not load tracks at this time.
+              </p>
+            )}
+            {!loading && !fetchError && tracks.length === 0 && (
+              <p className="text-center text-[#9a6a3a]/60 text-sm py-16"
+                style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+                No discipleship tracks available yet.
+              </p>
+            )}
+            {tracks.map((track, i) => (
               <TrackCard key={track.id} track={track} index={i} />
             ))}
           </div>

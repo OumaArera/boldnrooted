@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Clock, Users, BookOpen, Globe, Crown, Sword, ChevronDown, CheckCircle2, Calendar } from "lucide-react";
@@ -10,152 +10,51 @@ const fadeUp = (delay = 0) => ({
   viewport: { once: true },
 });
 
-const PROGRAMS = [
-  {
-    id: "eagles-rising",
-    emoji: "🦅",
-    icon: Crown,
-    title: "Eagles Rising",
-    badge: "Flagship",
-    duration: "12 Weeks",
-    audience: "All young adults",
-    format: "Online & In-Person",
-    gradient: "linear-gradient(145deg, #c8927a, #b8775a)",
-    accentColor: "#c8927a",
-    shortDesc: "An intensive discipleship track for young believers ready to go deeper — into the Word, into community, and into their God-given calling.",
-    fullDesc: "Eagles Rising is our flagship 12-week intensive discipleship programme. Named after Isaiah 40:31, it is designed to take young believers from spiritual infancy to grounded maturity. Each cohort meets weekly — alternating between deep Scripture study, prayer sessions, and practical application. Graduates leave with a personal spiritual formation plan, an accountability partner, and a clear sense of their Kingdom assignment.",
-    outcomes: [
-      "Grounded theology and Scripture knowledge",
-      "Personal prayer and devotional rhythm",
-      "Identified spiritual gifts and calling",
-      "Life-long accountability relationship",
-      "Community of 10–20 fellow believers",
-    ],
-    verse: "They shall mount up with wings as eagles.",
-    verseRef: "Isaiah 40:31",
-    nextCohort: "April 2026",
-  },
-  {
-    id: "rooted-word",
-    emoji: "📖",
-    icon: BookOpen,
-    title: "Rooted in the Word",
-    badge: "Daily",
-    duration: "Ongoing",
-    audience: "All levels",
-    format: "Digital",
-    gradient: "linear-gradient(145deg, #c4a882, #b09070)",
-    accentColor: "#c4a882",
-    shortDesc: "A daily devotional and Scripture memory programme pairing believers with accountability partners for consistent, life-transforming Bible engagement.",
-    fullDesc: "Rooted in the Word is our daily programme built around the conviction that consistent Scripture intake changes lives. Each participant receives a daily devotional, a weekly memory verse, and a bi-weekly check-in with their reading partner. The programme runs in 90-day cycles, covering a different book of the Bible each season.",
-    outcomes: [
-      "Daily devotional habit established",
-      "Comprehensive Bible book studies",
-      "Scripture memory in each cycle",
-      "Accountability and growth tracking",
-      "Access to study notes and commentaries",
-    ],
-    verse: "Thy word is a lamp unto my feet, and a light unto my path.",
-    verseRef: "Psalm 119:105",
-    nextCohort: "March 2026",
-  },
-  {
-    id: "global-missions",
-    emoji: "🌍",
-    icon: Globe,
-    title: "Global Missions",
-    badge: "Outreach",
-    duration: "2–4 Weeks",
-    audience: "18–35 years",
-    format: "In-Person",
-    gradient: "linear-gradient(145deg, #9ab0c8, #7890a8)",
-    accentColor: "#9ab0c8",
-    shortDesc: "Short-term missions opportunities, cross-cultural gospel training, and strategic deployment to communities across Africa, Europe, and beyond.",
-    fullDesc: "Our Global Missions programme equips young adults with the theology, cultural intelligence, and practical skills needed for effective cross-cultural gospel work. Participants attend a 2-week pre-deployment training before joining a short-term team. Fields include Ghana, Kenya, Nigeria, and partner communities in Europe and the diaspora.",
-    outcomes: [
-      "Cross-cultural ministry training",
-      "Evangelism and gospel fluency",
-      "Partnership with local church leaders",
-      "Field reports and life testimonies",
-      "Pathway to long-term missions",
-    ],
-    verse: "Go ye into all the world, and preach the gospel to every creature.",
-    verseRef: "Mark 16:15",
-    nextCohort: "June 2026",
-  },
-  {
-    id: "prayer-room",
-    emoji: "🙏",
-    icon: Users,
-    title: "The Prayer Room",
-    badge: "Live",
-    duration: "Ongoing",
-    audience: "All believers",
-    format: "Online",
-    gradient: "linear-gradient(145deg, #a89ab4, #8878a0)",
-    accentColor: "#a89ab4",
-    shortDesc: "A 24/7 intercessory prayer community standing in the gap for nations, families, and the next generation — every hour covered, every day.",
-    fullDesc: "The Prayer Room is the heartbeat of Bold and Rooted. Organised into prayer watches, each member commits to a one-hour weekly prayer slot to ensure continuous intercession. Monthly corporate prayer nights, fasting weeks, and prophetic intercession sessions are regular features. We believe prayer moves mountains — and we intend to prove it.",
-    outcomes: [
-      "Personal intercessory prayer discipline",
-      "Monthly corporate prayer nights",
-      "Quarterly fasting and prayer weeks",
-      "Prophetic intercession training",
-      "Prayer journal and warfare guides",
-    ],
-    verse: "Pray without ceasing.",
-    verseRef: "1 Thessalonians 5:17",
-    nextCohort: "Ongoing — Join any time",
-  },
-  {
-    id: "women-of-valor",
-    emoji: "👑",
-    icon: Crown,
-    title: "Women of Valor",
-    badge: "Community",
-    duration: "6 Months",
-    audience: "Young women 18–35",
-    format: "Hybrid",
-    gradient: "linear-gradient(145deg, #c4a0b8, #a88098)",
-    accentColor: "#c4a0b8",
-    shortDesc: "Empowering young women to walk boldly in their God-given identity and calling — rooted in Scripture, rich in community, fearless in purpose.",
-    fullDesc: "Women of Valor is a 6-month formation journey for young women who are ready to step into the fullness of who God created them to be. Through monthly intensives, mentorship pairings, and a community of sisters, participants discover their identity in Christ, break free from fear and comparison, and step into their unique Kingdom calling.",
-    outcomes: [
-      "Biblical womanhood and identity formation",
-      "Mentorship from seasoned women leaders",
-      "Financial wisdom and stewardship",
-      "Emotional healing and wholeness",
-      "Commissioned into calling",
-    ],
-    verse: "Who can find a virtuous woman? for her price is far above rubies.",
-    verseRef: "Proverbs 31:10",
-    nextCohort: "May 2026",
-  },
-  {
-    id: "men-of-covenant",
-    emoji: "⚔️",
-    icon: Sword,
-    title: "Men of Covenant",
-    badge: "Community",
-    duration: "6 Months",
-    audience: "Young men 18–35",
-    format: "Hybrid",
-    gradient: "linear-gradient(145deg, #d4b882, #c0a06a)",
-    accentColor: "#d4b882",
-    shortDesc: "Building men of integrity, purpose, and spiritual authority — equipped to lead in the home, the community, and every sphere of God's Kingdom.",
-    fullDesc: "Men of Covenant is a brotherhood forged around covenant relationship, accountability, and Kingdom purpose. Over 6 months, young men engage in Scripture-based masculinity formation, undergo deep accountability, and are equipped to lead with servant-hearted authority. The programme culminates in a commissioning ceremony where each man makes a public covenant of purpose.",
-    outcomes: [
-      "Biblical masculinity and servant leadership",
-      "Brotherhood and iron-sharpening accountability",
-      "Vocational calling and purpose clarity",
-      "Marriage and family preparation",
-      "Commissioned with a covenant statement",
-    ],
-    verse: "Watch ye, stand fast in the faith, quit you like men, be strong.",
-    verseRef: "1 Corinthians 16:13",
-    nextCohort: "May 2026",
-  },
+/* ─── API ─── */
+const API_BASE = "https://goalkeepers-backend-2.onrender.com/bold-n-rooted/api/v1";
+const TODAY = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+
+// Visual defaults cycled by index when the API doesn't provide them
+const VISUAL_DEFAULTS = [
+  { emoji: "🦅", gradient: "linear-gradient(145deg, #c8927a, #b8775a)", accentColor: "#c8927a" },
+  { emoji: "👑", gradient: "linear-gradient(145deg, #c4a0b8, #a88098)", accentColor: "#c4a0b8" },
+  { emoji: "📖", gradient: "linear-gradient(145deg, #c4a882, #b09070)", accentColor: "#c4a882" },
+  { emoji: "🌍", gradient: "linear-gradient(145deg, #9ab0c8, #7890a8)", accentColor: "#9ab0c8" },
+  { emoji: "🙏", gradient: "linear-gradient(145deg, #a89ab4, #8878a0)", accentColor: "#a89ab4" },
+  { emoji: "⚔️", gradient: "linear-gradient(145deg, #d4b882, #c0a06a)", accentColor: "#d4b882" },
 ];
+
+const formatDate = (iso) => {
+  const d = new Date(iso);
+  return d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+};
+
+const parseProgram = (prog, index) => {
+  const vis = VISUAL_DEFAULTS[index % VISUAL_DEFAULTS.length];
+  const durationDays = Math.round(
+    (new Date(prog.end_date) - new Date(prog.start_date)) / (1000 * 60 * 60 * 24)
+  );
+  const duration = durationDays === 0 ? "1 Day" : `${durationDays + 1} Day${durationDays > 0 ? "s" : ""}`;
+
+  return {
+    id: prog.id,
+    emoji: vis.emoji,
+    icon: BookOpen,
+    title: prog.title,
+    badge: prog.organizer,
+    duration,
+    audience: "All young adults",
+    format: prog.location,
+    gradient: vis.gradient,
+    accentColor: vis.accentColor,
+    shortDesc: prog.description,
+    fullDesc: prog.description,
+    outcomes: [],                         // not provided by API
+    verse: "He shall be like a tree planted by rivers of water.",
+    verseRef: "Psalm 1:3",
+    nextCohort: `${formatDate(prog.start_date)} → ${formatDate(prog.end_date)}`,
+  };
+};
 
 const Ornament = ({ className = "" }) => (
   <svg viewBox="0 0 80 20" fill="none" className={className}>
@@ -325,10 +224,31 @@ const ProgramCard = ({ program, index, onExpand, isExpanded }) => (
 
 const Programs = () => {
   const [expanded, setExpanded] = useState(null);
-  const [filter, setFilter] = useState("All");
-  const filters = ["All", "Daily", "Flagship", "Outreach", "Live", "Community"];
+  const [programs, setPrograms] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
 
-  const filtered = filter === "All" ? PROGRAMS : PROGRAMS.filter(p => p.badge === filter);
+  useEffect(() => {
+    const fetchPrograms = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/programs/`);
+        if (!res.ok) throw new Error("Network response not ok");
+        const json = await res.json();
+        const active = (json.data?.results ?? [])
+          .filter(p => p.is_active && p.end_date >= TODAY)   // exclude past programs
+          .map(parseProgram);
+        setPrograms(active);
+      } catch (err) {
+        console.error("Programs fetch error:", err);
+        setFetchError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPrograms();
+  }, []);
+
+  const filtered = programs; 
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#fdf6f0" }}>
@@ -398,31 +318,29 @@ const Programs = () => {
         </div>
       </section>
 
-      {/* ── Filter bar — inactive pill text: was rgba(90,58,40,0.6) → now 0.80 ── */}
-      <div className="sticky top-14 z-30 backdrop-blur-md"
-        style={{ backgroundColor: "rgba(253,246,240,0.96)", borderBottom: "1px solid rgba(200,146,122,0.15)" }}>
-        <div className="max-w-6xl mx-auto px-6 py-4 flex gap-2 overflow-x-auto scrollbar-hide">
-          {filters.map(f => (
-            <button key={f} onClick={() => setFilter(f)}
-              className="shrink-0 px-4 py-2 rounded-full text-xs font-medium uppercase tracking-widest transition"
-              style={{
-                fontFamily: "'Jost', system-ui, sans-serif",
-                background: filter === f
-                  ? "linear-gradient(135deg, #c8927a, #b8775a)"
-                  : "rgba(255,255,255,0.9)",
-                color: filter === f ? "white" : "rgba(90,58,40,0.80)",
-                border: filter === f ? "none" : "1px solid rgba(200,146,122,0.30)",
-                boxShadow: filter === f ? "0 4px 16px rgba(200,146,122,0.3)" : "none",
-              }}>
-              {f}
-            </button>
-          ))}
-        </div>
-      </div>
+     
 
       {/* ── Programs grid ── */}
       <section className="py-16 parchment-bg">
         <div className="max-w-6xl mx-auto px-6">
+          {loading && (
+            <p className="text-center text-[#9a6a3a]/60 text-sm py-16"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+              Loading programmes…
+            </p>
+          )}
+          {fetchError && !loading && (
+            <p className="text-center text-[#c8927a]/70 text-sm py-16"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+              Could not load programmes at this time.
+            </p>
+          )}
+          {!loading && !fetchError && filtered.length === 0 && (
+            <p className="text-center text-[#9a6a3a]/60 text-sm py-16"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+              No upcoming programmes at this time. Check back soon.
+            </p>
+          )}
           <div className="grid md:grid-cols-2 gap-6">
             {filtered.map((program, i) => (
               <ProgramCard

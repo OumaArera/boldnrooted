@@ -28,17 +28,32 @@ const PILLARS = [
   { icon: Heart, title: "Prayer & Intercession", desc: "A culture of prayer is at our core. We believe prayer moves mountains and transforms the hearts of nations.", color: "from-[#d4a0a8] to-[#c08890]" },
 ];
 
-const UPCOMING_EVENTS = [
-  { date: "MAR", day: "15", year: "2026", title: "Bold Faith Conference", location: "Online & In-Person", type: "Conference" },
-  { date: "APR", day: "02", year: "2026", title: "Rooted Women's Retreat", location: "Atlanta, GA", type: "Retreat" },
-  { date: "APR", day: "20", year: "2026", title: "Youth Discipleship Camp", location: "Accra, Ghana", type: "Camp" },
-];
+/* ─── API helpers ─── */
+const API_BASE = "https://goalkeepers-backend-2.onrender.com/bold-n-rooted/api/v1";
 
-const BLOGS = [
-  { tag: "Faith", title: "Benevolence: The Quiet Power That Transforms Lives", author: "Kwaku Duah Junior", read: "5 min", id: "blog_benevolence_2026_001" },
-  { tag: "Identity", title: "Standing Firm When the World Says Bend", author: "Editorial", read: "4 min", id: "blog_002" },
-  { tag: "Prayer", title: "When You're Waiting on God: A Letter to the Weary", author: "Editorial", read: "6 min", id: "blog_003" },
-];
+const parseEvent = (ev) => {
+  const d = new Date(ev.event_date);
+  return {
+    date: d.toLocaleString("en-US", { month: "short" }).toUpperCase(),
+    day: String(d.getUTCDate()).padStart(2, "0"),
+    year: String(d.getUTCFullYear()),
+    title: ev.title,
+    location: ev.location,
+    type: ev.event_type,
+  };
+};
+
+const parseBlog = (b) => {
+  const wordCount = b.content ? b.content.trim().split(/\s+/).length : 200;
+  const mins = Math.max(1, Math.round(wordCount / 200));
+  return {
+    tag: b.tags?.[0]?.name ?? "Faith",
+    title: b.title,
+    author: "Editorial",
+    read: `${mins} min`,
+    id: b.slug,
+  };
+};
 
 const STATS = [
   { val: "12K+", label: "Young Believers" },
@@ -92,6 +107,32 @@ const Ornament = ({ className = "" }) => (
 
 /* ─── Main ─── */
 const Home = () => {
+  const [events, setEvents] = useState([]);
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [evRes, blogRes] = await Promise.all([
+          fetch(`${API_BASE}/events/`),
+          fetch(`${API_BASE}/blogs/`),
+        ]);
+        if (!evRes.ok || !blogRes.ok) throw new Error("Network response not ok");
+        const [evJson, blogJson] = await Promise.all([evRes.json(), blogRes.json()]);
+        setEvents((evJson.data?.results ?? []).map(parseEvent));
+        setBlogs((blogJson.data?.results ?? []).map(parseBlog));
+      } catch (err) {
+        console.error("Bold & Rooted fetch error:", err);
+        setFetchError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className="min-h-screen overflow-x-hidden"
       style={{
@@ -491,8 +532,20 @@ const Home = () => {
             </Link>
           </motion.div>
 
+          {loading && (
+            <p className="text-[#9a6a3a]/60 text-sm text-center py-8"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+              Loading events…
+            </p>
+          )}
+          {fetchError && !loading && (
+            <p className="text-[#c8927a]/70 text-sm text-center py-8"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+              Could not load events at this time.
+            </p>
+          )}
           <div className="space-y-4">
-            {UPCOMING_EVENTS.map((ev, i) => (
+            {events.map((ev, i) => (
               <motion.div
                 key={i}
                 {...fadeUp(i * 0.1)}
@@ -578,8 +631,20 @@ const Home = () => {
             </Link>
           </motion.div>
 
+          {loading && (
+            <p className="text-[#9a6a3a]/60 text-sm text-center py-8"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+              Loading articles…
+            </p>
+          )}
+          {fetchError && !loading && (
+            <p className="text-[#c8927a]/70 text-sm text-center py-8"
+              style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+              Could not load articles at this time.
+            </p>
+          )}
           <div className="grid md:grid-cols-3 gap-6">
-            {BLOGS.map((b, i) => (
+            {blogs.map((b, i) => (
               <motion.article key={i} {...fadeUp(i * 0.1)} className="group">
                 <Link to={`/blogs/${b.id}`} className="block h-full">
                   <div className="rounded-2xl overflow-hidden h-full flex flex-col transition-all"

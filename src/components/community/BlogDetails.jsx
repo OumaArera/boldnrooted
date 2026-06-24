@@ -6,7 +6,46 @@ import {
   Check, FileText, Menu, X, Mail, Phone, Clock,
   Twitter, Facebook, Link2
 } from "lucide-react";
-import { blogs } from "../../data/blogs.data";
+
+const API_BASE = "https://goalkeepers-backend-2.onrender.com/bold-n-rooted/api/v1";
+
+/* Adapts flat API blog to the page/section structure the reader UI expects */
+const adaptBlog = (b) => {
+  const paragraphs = (b.content ?? "")
+    .split(/\n\n+/)
+    .map(p => p.trim())
+    .filter(Boolean);
+
+  // Split into pages of ~3 paragraphs each for multi-page reading UX
+  const chunkSize = 3;
+  const chunks = [];
+  for (let i = 0; i < paragraphs.length; i += chunkSize) {
+    chunks.push(paragraphs.slice(i, i + chunkSize));
+  }
+  if (chunks.length === 0) chunks.push([b.content ?? ""]);
+
+  const pages = chunks.map((paras, i) => ({
+    pageNumber: i + 1,
+    label: i === 0 ? "Introduction" : `Part ${i + 1}`,
+    sections: [{ heading: null, paragraphs: paras }],
+  }));
+
+  return {
+    id:          b.id,
+    title:       b.title,
+    slug:        b.slug,
+    author:      "Editorial",
+    authorTitle: null,
+    authorBio:   null,
+    email:       null,
+    contact:     null,
+    copyright:   b.published_at ? new Date(b.published_at).getFullYear().toString() : null,
+    category:    b.tags?.[0]?.name ?? "Faith",
+    tags:        (b.tags ?? []).map(t => t.name),
+    readTime:    Math.max(1, Math.round((b.content ?? "").split(/\s+/).length / 200)),
+    pages,
+  };
+};
 
 /* ─── reading progress hook ─── */
 const useReadingProgress = () => {
@@ -210,8 +249,8 @@ const Section = ({ section, isFirstSection, pageNumber }) => (
 );
 
 /* ─── Related blogs ─── */
-const RelatedBlogs = ({ currentId }) => {
-  const related = blogs.filter(b => b.id !== currentId).slice(0, 2);
+const RelatedBlogs = ({ currentId, allBlogs = [] }) => {
+  const related = allBlogs.filter(b => b.id !== currentId).slice(0, 2);
   if (related.length === 0) return null;
 
   return (
@@ -256,13 +295,34 @@ const RelatedBlogs = ({ currentId }) => {
 /* ─── Main BlogDetails ─── */
 const BlogDetails = () => {
   const { id } = useParams();
+  const [blog, setBlog]           = useState(null);
+  const [loading, setLoading]     = useState(true);
+  const [fetchError, setFetchError] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [shareOpen, setShareOpen] = useState(false);
-  const [tocOpen, setTocOpen] = useState(false);
+  const [tocOpen, setTocOpen]     = useState(false);
   const topRef = useRef(null);
   const scrollProgress = useReadingProgress();
 
-  const blog = blogs.find(b => b.id === id);
+  useEffect(() => {
+    const fetchBlog = async () => {
+      setLoading(true);
+      setFetchError(false);
+      try {
+        const res = await fetch(`${API_BASE}/retrieve-blogs/${id}/`);
+        if (!res.ok) throw new Error("Not found");
+        const json = await res.json();
+        setBlog(adaptBlog(json.data));
+      } catch (err) {
+        console.error("BlogDetails fetch error:", err);
+        setFetchError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBlog();
+    setCurrentPage(0);  // reset page when blog id changes
+  }, [id]);
 
   useEffect(() => {
     if (!shareOpen) return;
@@ -275,7 +335,16 @@ const BlogDetails = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage]);
 
-  if (!blog) {
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: "#fdf6f0", fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.5)" }}>
+        Loading article…
+      </div>
+    );
+  }
+
+  if (fetchError || !blog) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-5"
         style={{ backgroundColor: "#fdf6f0", fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
@@ -576,7 +645,7 @@ const BlogDetails = () => {
               </motion.div>
             )}
 
-            {currentPage === totalPages - 1 && <RelatedBlogs currentId={id} />}
+            {currentPage === totalPages - 1 && <RelatedBlogs currentId={id} allBlogs={[]} />}
           </motion.div>
         </AnimatePresence>
 

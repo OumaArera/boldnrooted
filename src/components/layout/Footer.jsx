@@ -23,8 +23,20 @@ const LINKS = {
   ],
 };
 
+const TikTok = ({ size = 14 }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 256 256"
+    fill="currentColor"
+  >
+    <path d="M224 80.5a87.1 87.1 0 0 1-50.5-16.1v73.6a72 72 0 1 1-62.5-71.4v37.2a34.9 34.9 0 1 0 24.5 33.4V0h37.5a49.7 49.7 0 0 0 1.1 10.6A50.2 50.2 0 0 0 224 48.5Z"/>
+  </svg>
+);
+
 const SOCIALS = [
-  { icon: Instagram, href: "#", label: "Instagram" },
+  { icon: Instagram, href: "https://www.instagram.com/boldrooted", label: "Instagram" },
+  { icon: TikTok, href: "https://www.tiktok.com/@boldrooted1", label: "TikTok" },
   { icon: Youtube, href: "#", label: "YouTube" },
   { icon: Facebook, href: "#", label: "Facebook" },
   { icon: Twitter, href: "#", label: "X / Twitter" },

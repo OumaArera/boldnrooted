@@ -1,8 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen, ArrowRight, Search, FileText, Tag, Clock, ArrowUpRight } from "lucide-react";
-import { blogs } from "../../data/blogs.data";
+
+const API_BASE = "https://goalkeepers-backend-2.onrender.com/bold-n-rooted/api/v1";
+
+const parseBlog = (b) => ({
+  id:       b.id,
+  title:    b.title,
+  slug:     b.slug,
+  author:   "Editorial",                          // author is a UUID — no display name in API
+  category: b.tags?.[0]?.name ?? "Faith",
+  tags:     (b.tags ?? []).map(t => t.name),
+  content:  b.content ?? "",
+  readTime: Math.max(1, Math.round((b.content ?? "").split(/\s+/).length / 200)),
+  publishedAt: b.published_at,
+});
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 24 },
@@ -11,7 +24,6 @@ const fadeUp = (delay = 0) => ({
   viewport: { once: true },
 });
 
-const ALL_TAGS = ["All", ...Array.from(new Set(blogs.flatMap(b => b.tags || [])))];
 
 const Ornament = ({ className = "" }) => (
   <svg viewBox="0 0 80 20" fill="none" className={className}>
@@ -24,8 +36,33 @@ const Ornament = ({ className = "" }) => (
 );
 
 const Blogs = () => {
-  const [search, setSearch] = useState("");
+  const [blogs, setBlogs]         = useState([]);
+  const [loading, setLoading]     = useState(true);
+  const [fetchError, setFetchError] = useState(false);
+  const [search, setSearch]       = useState("");
   const [activeTag, setActiveTag] = useState("All");
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/blogs/`);
+        if (!res.ok) throw new Error("Network error");
+        const json = await res.json();
+        const active = (json.data?.results ?? [])
+          .filter(b => b.is_published && b.is_active)
+          .map(parseBlog);
+        setBlogs(active);
+      } catch (err) {
+        console.error("Blogs fetch error:", err);
+        setFetchError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBlogs();
+  }, []);
+
+  const ALL_TAGS = ["All", ...Array.from(new Set(blogs.flatMap(b => b.tags ?? [])))];
 
   const filtered = blogs.filter(b => {
     const matchSearch =
@@ -150,7 +187,19 @@ const Blogs = () => {
 
       {/* ── Listing ── */}
       <section className="max-w-6xl mx-auto px-6 py-16 parchment-bg">
-        {filtered.length === 0 ? (
+        {loading && (
+          <p className="text-center text-[#9a6a3a]/60 text-sm py-24"
+            style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+            Loading articles…
+          </p>
+        )}
+        {fetchError && !loading && (
+          <p className="text-center text-[#c8927a]/70 text-sm py-24"
+            style={{ fontFamily: "'Jost', system-ui, sans-serif" }}>
+            Could not load articles at this time.
+          </p>
+        )}
+        {!loading && !fetchError && filtered.length === 0 ? (
           <div className="text-center py-24" style={{ fontFamily: "'Jost', system-ui, sans-serif", color: "rgba(90,58,40,0.4)" }}>
             <FileText size={44} className="mx-auto mb-4 opacity-20" />
             <p className="text-lg" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", color: "#3d2214" }}>
@@ -217,7 +266,7 @@ const Blogs = () => {
                       )}
                       <p className="text-sm leading-[1.85] mb-5"
                         style={{ fontFamily: "'EB Garamond', Georgia, serif", color: "rgba(90,58,40,0.72)" }}>
-                        {filtered[0].pages?.[0]?.sections?.[0]?.paragraphs?.[0]?.substring(0, 200)}…
+                        {filtered[0].content?.substring(0, 200)}…
                       </p>
 
                       <div className="flex items-center justify-between">
@@ -319,9 +368,7 @@ const Blogs = () => {
 };
 
 const BlogMiniCard = ({ blog, index }) => {
-  const wordCount = blog.pages?.reduce((acc, p) =>
-    acc + p.sections.reduce((a, s) => a + s.paragraphs.join(" ").split(" ").length, 0), 0) || 0;
-  const readTime = Math.ceil(wordCount / 200);
+  const readTime = blog.readTime ?? 1;
 
   return (
     <motion.article {...fadeUp(index * 0.07)} className="group flex-1">
